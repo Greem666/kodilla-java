@@ -11,12 +11,12 @@ public class ShapeCollector {
 
     public boolean addFigure(IShape shape) {
         // Add figure shape to shapesList
-        return true;
+        return false;
     }
 
     public boolean removeFigure(IShape shape) {
         // Remove figure shape from shapesList
-        return true;
+        return false;
     }
 
     public IShape getFigure(int n) {
@@ -26,9 +26,5 @@ public class ShapeCollector {
 
     public void showFigures() {
         // Iterate through shapesList and print them to console
-    }
-
-    public ArrayList<IShape> getShapesList() {
-        return shapesList;
     }
 }

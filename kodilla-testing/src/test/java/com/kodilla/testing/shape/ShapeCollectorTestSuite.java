@@ -146,9 +146,6 @@ public class ShapeCollectorTestSuite {
         Assert.assertTrue(resultAddTriangle);
         Assert.assertTrue(resultAddSquare);
         Assert.assertTrue(resultAddCircle);
-        Assert.assertTrue(shapeCollector.getShapesList().contains(this.triangle));
-        Assert.assertTrue(shapeCollector.getShapesList().contains(this.square));
-        Assert.assertTrue(shapeCollector.getShapesList().contains(this.circle));
     }
 
     @Test
@@ -171,9 +168,6 @@ public class ShapeCollectorTestSuite {
         Assert.assertTrue(resultRemoveTriangle);
         Assert.assertTrue(resultRemoveSquare);
         Assert.assertTrue(resultRemoveCircle);
-        Assert.assertFalse(shapeCollector.getShapesList().contains(this.triangle));
-        Assert.assertFalse(shapeCollector.getShapesList().contains(this.square));
-        Assert.assertFalse(shapeCollector.getShapesList().contains(this.circle));
     }
 
     @Test
