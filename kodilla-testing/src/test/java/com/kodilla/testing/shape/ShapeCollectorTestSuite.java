@@ -36,56 +36,60 @@ public class ShapeCollectorTestSuite {
 
     // Shape tests
 
-    @Test
-    public void testCreateShapes() {
-        System.out.println("Shape creation");
+    @Test(expected = NonPositiveDimensionsException.class)
+    public void testCreateShapesTriangleBaseHeightNegative() throws NonPositiveDimensionsException {
+        System.out.println("Triangle creation - base and height negative");
 
-        // Given
-        // Declarations in @Before function
-
-        // When
-        Triangle expectedTriangle = new Triangle(5.0, 10.0);
-        Square expectedSquare = new Square(10.0);
-        Circle expectedCircle = new Circle(10.0);
-
-        // Then
-        Assert.assertEquals(expectedTriangle, this.triangle);
-        Assert.assertEquals(expectedSquare, this.square);
-        Assert.assertEquals(expectedCircle, this.circle);
+        Triangle triangle = new Triangle(-1.33, -20.0);
     }
 
-    @Test
-    public void testCreateShapesIncorrectDimensions() {
-        System.out.println("Shape creation - incorrect dimensions");
+    @Test(expected = NonPositiveDimensionsException.class)
+    public void testCreateShapesTriangleBaseNegativeHeightZero() throws NonPositiveDimensionsException {
+        System.out.println("Triangle creation - base negative and height zero");
 
-        // Given
-        Triangle triangle1 = new Triangle(-1.33, -20.0);
-        Triangle triangle2 = new Triangle(-1.33, 0.0);
-        Triangle triangle3 = new Triangle(-1.33, 20.0);
-        Triangle triangle4 = new Triangle(0.0, -20.0);
-        Triangle triangle5 = new Triangle(1.33, -20.0);
+        Triangle triangle = new Triangle(-1.33, 0.0);
+    }
 
-        Square square1 = new Square(-20.0);
-        Square square2 = new Square(0.0);
+    @Test(expected = NonPositiveDimensionsException.class)
+    public void testCreateShapesTriangleBaseHeightZero() throws NonPositiveDimensionsException {
+        System.out.println("Triangle creation - base and height zero");
 
-        Circle circle1 = new Circle(-1.33);
-        Circle circle2 = new Circle(0.0);
+        Triangle triangle = new Triangle(0.0, 0.0);
+    }
 
-        // When
-        Triangle expectedTriangle = new Triangle(0.0, 0.0);
-        Square expectedSquare = new Square(0.0);
-        Circle expectedCircle = new Circle(0.0);
+    @Test(expected = NonPositiveDimensionsException.class)
+    public void testCreateShapesTriangleBaseZeroHeightNegative() throws NonPositiveDimensionsException {
+        System.out.println("Triangle creation - base zero and height negative");
 
-        // Then
-        Assert.assertEquals(expectedTriangle, triangle1);
-        Assert.assertEquals(expectedTriangle, triangle2);
-        Assert.assertEquals(expectedTriangle, triangle3);
-        Assert.assertEquals(expectedTriangle, triangle4);
-        Assert.assertEquals(expectedTriangle, triangle5);
-        Assert.assertEquals(expectedSquare, square1);
-        Assert.assertEquals(expectedSquare, square2);
-        Assert.assertEquals(expectedCircle, circle1);
-        Assert.assertEquals(expectedCircle, circle1);
+        Triangle triangle = new Triangle(0.0, -1.33);
+    }
+
+    @Test(expected = NonPositiveDimensionsException.class)
+    public void testCreateShapesSquareNegativeSide() throws NonPositiveDimensionsException {
+        System.out.println("Square creation - side negative");
+
+        Square square = new Square(-1.33);
+    }
+
+    @Test(expected = NonPositiveDimensionsException.class)
+    public void testCreateShapesSquareZeroSide() throws NonPositiveDimensionsException {
+        System.out.println("Square creation - side zero");
+
+        Square square = new Square(0.0);
+    }
+
+    @Test(expected = NonPositiveDimensionsException.class)
+    public void testCreateShapesCircleNegativeRadius() throws NonPositiveDimensionsException {
+        System.out.println("Circle creation - radius negative");
+
+        Circle circle = new Circle(-1.33);
+    }
+
+    @Test(expected = NonPositiveDimensionsException.class)
+    public void testCreateShapesCircleZeroRadius() throws NonPositiveDimensionsException {
+        System.out.println("Circle creation - radius zero");
+
+        Circle circle = new Circle(0.0);
     }
 
     @Test
