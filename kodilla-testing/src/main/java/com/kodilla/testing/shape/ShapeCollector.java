@@ -24,7 +24,8 @@ public class ShapeCollector {
         return null;
     }
 
-    public void showFigures() {
+    public String showFigures() {
         // Iterate through shapesList and print them to console
+        return null;
     }
 }
