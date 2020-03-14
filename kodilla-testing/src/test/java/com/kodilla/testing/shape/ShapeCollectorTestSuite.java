@@ -126,10 +126,12 @@ public class ShapeCollectorTestSuite {
 
         // Then
         Assert.assertNull(shapeCollector.getFigure(3));
+        Assert.assertNull(shapeCollector.getFigure(100));
+        Assert.assertNull(shapeCollector.getFigure(-100));
     }
 
     @Test
-    public void testGetFigures() {
+    public void testShowFigures() {
         // Given
         // Declarations in @Before function
 

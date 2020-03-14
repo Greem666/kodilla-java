@@ -1,6 +1,7 @@
 package com.kodilla.testing.shape;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class ShapeCollector {
     private ArrayList<IShape> shapesList;
@@ -10,22 +11,33 @@ public class ShapeCollector {
     }
 
     public boolean addFigure(IShape shape) {
-        // Add figure shape to shapesList
-        return false;
+        return shapesList.add(shape);
     }
 
     public boolean removeFigure(IShape shape) {
-        // Remove figure shape from shapesList
-        return false;
+        return shapesList.remove(shape);
     }
 
     public IShape getFigure(int n) {
-        // return figure from position n in shapesList
-        return null;
+        IShape result = null;
+        if (n < shapesList.size() && n >= 0) {
+            result = shapesList.get(n);
+        }
+        return result;
     }
 
     public String showFigures() {
-        // Iterate through shapesList and print them to console
-        return null;
+        String result = "";
+        Iterator<IShape> shapesListIterator = shapesList.iterator();
+        while (true) {
+            IShape shape = shapesListIterator.next();
+            if (shapesListIterator.hasNext()) {
+                result += String.format("%s - %.2f, ", shape.getShapeName(), shape.getField());
+            } else {
+                result += String.format("%s - %.2f", shape.getShapeName(), shape.getField());
+                break;
+            }
+        }
+        return result;
     }
 }

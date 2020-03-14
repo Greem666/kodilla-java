@@ -14,11 +14,11 @@ public class Circle implements IShape {
     }
 
     public String getShapeName() {
-        return "xxx";
+        return "circle";
     }
 
     public Double getField() {
-        return 10.0;
+        return Math.PI * this.radius * this.radius;
     }
 
     @Override

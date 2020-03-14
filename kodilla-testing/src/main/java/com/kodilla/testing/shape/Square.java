@@ -14,11 +14,11 @@ public class Square implements IShape {
     }
 
     public String getShapeName() {
-        return "xxx";
+        return "square";
     }
 
     public Double getField() {
-        return 10.0;
+        return this.side * this.side;
     }
 
     @Override

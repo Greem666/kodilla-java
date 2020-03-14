@@ -16,11 +16,11 @@ public class Triangle implements IShape {
     }
 
     public String getShapeName() {
-        return "xxx";
+        return "triangle";
     }
 
     public Double getField() {
-        return 10.0;
+        return 0.5 * this.base * this.height;
     }
 
     @Override
