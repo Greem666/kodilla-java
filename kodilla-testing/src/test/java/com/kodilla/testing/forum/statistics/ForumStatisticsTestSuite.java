@@ -14,6 +14,9 @@ public class ForumStatisticsTestSuite {
     List<String> userNames;
     double allowedDelta = 0.001;
 
+    /**
+     * Aux method for easy variable this.userNames List<String> initialization
+     */
     public void initializeUserNamesList(int userCount) {
         this.userNames = new ArrayList<>();
         for (int i = 1; i <= userCount; i++) {
@@ -219,6 +222,7 @@ public class ForumStatisticsTestSuite {
         // this.forumStatistics, this.userNames and this.statistics
         //   Mockito behaviour defined in before(), except for:
         initializeUserNamesList(0);
+        when(statistics.userNames()).thenReturn(this.userNames);
         this.forumStatistics.calculateAdvStatistics(this.statistics);
 
         // When
@@ -246,6 +250,7 @@ public class ForumStatisticsTestSuite {
         // this.forumStatistics, this.userNames and this.statistics
         //   Mockito behaviour defined in before(), except for:
         initializeUserNamesList(100);
+        when(statistics.userNames()).thenReturn(this.userNames);
         this.forumStatistics.calculateAdvStatistics(this.statistics);
 
         // When
