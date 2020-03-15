@@ -98,6 +98,7 @@ public class BookLibraryTestSuite {
 
         // Then
         Assert.assertEquals(0, resultListOf0Books.size());
+        verify(libraryDatabaseMock, times(1)).listBooksInHandsOf(any(LibraryUser.class));
     }
 
     @Test
@@ -115,6 +116,7 @@ public class BookLibraryTestSuite {
 
         // Then
         Assert.assertEquals(1, resultListOf1Book.size());
+        verify(libraryDatabaseMock, times(1)).listBooksInHandsOf(any(LibraryUser.class));
     }
 
     @Test
@@ -132,6 +134,7 @@ public class BookLibraryTestSuite {
 
         // Then
         Assert.assertEquals(5, resultListOf5Books.size());
+        verify(libraryDatabaseMock, times(1)).listBooksInHandsOf(any(LibraryUser.class));
     }
 
 
