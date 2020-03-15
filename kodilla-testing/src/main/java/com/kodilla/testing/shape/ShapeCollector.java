@@ -28,15 +28,8 @@ public class ShapeCollector {
 
     public String showFigures() {
         String result = "";
-        Iterator<IShape> shapesListIterator = shapesList.iterator();
-        while (true) {
-            IShape shape = shapesListIterator.next();
-            if (shapesListIterator.hasNext()) {
-                result += String.format("%s - %.2f, ", shape.getShapeName(), shape.getField());
-            } else {
-                result += String.format("%s - %.2f", shape.getShapeName(), shape.getField());
-                break;
-            }
+        for (IShape shape: shapesList) {
+            result += String.format("%s - %.2f, ", shape.getShapeName(), shape.getField());
         }
         return result;
     }

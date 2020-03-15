@@ -140,7 +140,7 @@ public class ShapeCollectorTestSuite {
         shapeCollector.addFigure(this.square);
         shapeCollector.addFigure(this.circle);
         String result = shapeCollector.showFigures();
-        String expectedOutput = String.format("triangle - %.2f, square - %.2f, circle - %.2f",
+        String expectedOutput = String.format("triangle - %.2f, square - %.2f, circle - %.2f, ",
                 0.5 * 5.0 * 10.0, 10.0 * 10.0, Math.PI * 10.0 * 10.0);
 
         // Then
