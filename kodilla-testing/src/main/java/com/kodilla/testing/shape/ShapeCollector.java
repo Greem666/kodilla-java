@@ -31,6 +31,7 @@ public class ShapeCollector {
         for (IShape shape: shapesList) {
             result += String.format("%s - %.2f, ", shape.getShapeName(), shape.getField());
         }
+        result = result.substring(0, result.length()-2);
         return result;
     }
 }
