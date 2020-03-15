@@ -14,15 +14,7 @@ public class ForumStatisticsTestSuite {
     List<String> userNames;
     double allowedDelta = 0.001;
 
-    /**
-     * Aux method for easy variable this.userNames List<String> initialization
-     */
-    public void initializeUserNamesList(int userCount) {
-        this.userNames = new ArrayList<>();
-        for (int i = 1; i <= userCount; i++) {
-            this.userNames.add("User" + i);
-        }
-    }
+    // Before and After setup
 
     @BeforeClass
     public static void beforeAllTests() {
@@ -35,12 +27,10 @@ public class ForumStatisticsTestSuite {
 
         this.forumStatistics = new ForumStatistics();
         this.statistics = mock(Statistics.class);
-        initializeUserNamesList(10);
 
-        // Default mocked statistics behaviour
-        when(statistics.postsCount()).thenReturn(10_000);
-        when(statistics.commentsCount()).thenReturn(10_000);
-        when(statistics.userNames()).thenReturn(this.userNames);
+        initializeUserNamesListAndAssignMockAction(10);
+        initializePostsCountAndAssignMockAction(10_000);
+        initializeCommentsCountAndAssignMockAction(10000);
     }
 
     @After
@@ -52,6 +42,26 @@ public class ForumStatisticsTestSuite {
     public static void afterAllTests() {
         System.out.println("All tests for ForumStatistics are done.");
     }
+
+    // Post, UserNames and Comments init + mock action assignments
+
+    public void initializeUserNamesListAndAssignMockAction(int userCount) {
+        this.userNames = new ArrayList<>();
+        for (int i = 1; i <= userCount; i++) {
+            this.userNames.add("User" + i);
+        }
+        when(statistics.userNames()).thenReturn(this.userNames);
+    }
+
+    public void initializePostsCountAndAssignMockAction(int postCount) {
+        when(statistics.postsCount()).thenReturn(postCount);
+    }
+
+    public void initializeCommentsCountAndAssignMockAction(int commentsCount) {
+        when(statistics.commentsCount()).thenReturn(commentsCount);
+    }
+
+    // Tests
 
     @Test
     public void testCalculateAdvStatistics() {
@@ -86,7 +96,7 @@ public class ForumStatisticsTestSuite {
         // Given
         // this.forumStatistics, this.userNames and this.statistics
         //   Mockito behaviour defined in before(), except for:
-        when(statistics.postsCount()).thenReturn(0);
+        initializePostsCountAndAssignMockAction(0);
         this.forumStatistics.calculateAdvStatistics(this.statistics);
 
         // When
@@ -113,7 +123,7 @@ public class ForumStatisticsTestSuite {
         // Given
         // this.forumStatistics, this.userNames and this.statistics
         //   Mockito behaviour defined in before(), except for:
-        when(statistics.postsCount()).thenReturn(1_000);
+        initializePostsCountAndAssignMockAction(1000);
         this.forumStatistics.calculateAdvStatistics(this.statistics);
 
         // When
@@ -140,7 +150,7 @@ public class ForumStatisticsTestSuite {
         // Given
         // this.forumStatistics, this.userNames and this.statistics
         //   Mockito behaviour defined in before(), except for:
-        when(statistics.commentsCount()).thenReturn(0);
+        initializeCommentsCountAndAssignMockAction(0);
         this.forumStatistics.calculateAdvStatistics(this.statistics);
 
         // When
@@ -167,7 +177,7 @@ public class ForumStatisticsTestSuite {
         // Given
         // this.forumStatistics, this.userNames and this.statistics
         //   Mockito behaviour defined in before(), except for:
-        when(statistics.commentsCount()).thenReturn(100);
+        initializeCommentsCountAndAssignMockAction(100);
         this.forumStatistics.calculateAdvStatistics(this.statistics);
 
         // When
@@ -194,7 +204,7 @@ public class ForumStatisticsTestSuite {
         // Given
         // this.forumStatistics, this.userNames and this.statistics
         //   Mockito behaviour defined in before(), except for:
-        when(statistics.commentsCount()).thenReturn(1_000_000);
+        initializeCommentsCountAndAssignMockAction(1_000_000);
         this.forumStatistics.calculateAdvStatistics(this.statistics);
 
         // When
@@ -221,8 +231,7 @@ public class ForumStatisticsTestSuite {
         // Given
         // this.forumStatistics, this.userNames and this.statistics
         //   Mockito behaviour defined in before(), except for:
-        initializeUserNamesList(0);
-        when(statistics.userNames()).thenReturn(this.userNames);
+        initializeUserNamesListAndAssignMockAction(0);
         this.forumStatistics.calculateAdvStatistics(this.statistics);
 
         // When
@@ -249,8 +258,7 @@ public class ForumStatisticsTestSuite {
         // Given
         // this.forumStatistics, this.userNames and this.statistics
         //   Mockito behaviour defined in before(), except for:
-        initializeUserNamesList(100);
-        when(statistics.userNames()).thenReturn(this.userNames);
+        initializeUserNamesListAndAssignMockAction(100);
         this.forumStatistics.calculateAdvStatistics(this.statistics);
 
         // When
@@ -269,6 +277,4 @@ public class ForumStatisticsTestSuite {
         Assert.assertEquals(expectedAvgCommentsPerUser, this.forumStatistics.getAvgCommentsPerUser(), this.allowedDelta);
         Assert.assertEquals(expectedAvgCommentsPerPost, this.forumStatistics.getAvgCommentsPerPost(), this.allowedDelta);
     }
-
-
 }
