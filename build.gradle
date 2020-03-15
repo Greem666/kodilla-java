@@ -14,7 +14,8 @@ repositories {
 
 dependencies {
 //    TEST DEPENDENCIES
-        testImplementation('junit:junit:4.12')
+    testImplementation('junit:junit:4.12')
+    testCompile group: 'org.mockito', name: 'mockito-all', version: '1.10.19'
 
 //    EXTERNAL DEPENDENCIES
     implementation 'org.springframework.boot:spring-boot-starter-web'
