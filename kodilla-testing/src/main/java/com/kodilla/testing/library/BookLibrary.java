@@ -28,7 +28,7 @@ public class BookLibrary {
 
     public List<Book> listBooksInHandsOf(LibraryUser libraryUser) {
         List<Book> booksList = new ArrayList<>();
-        Book placeholderBook = new Book("Book title", "Book author", 2000);
+        Book placeholderBook = new Book("Placeholder title", "Placeholder author", 2000);
         booksList.add(placeholderBook);
         return booksList;
     }

@@ -84,14 +84,14 @@ public class BookLibraryTestSuite {
     }
 
     @Test
-    public void testListBooksInHandsOfNoBooks() {
+    public void testListBooksInHandsOfHolderWithNoBooks() {
         // Given
         LibraryDatabase libraryDatabaseMock = mock(LibraryDatabase.class);
         BookLibrary bookLibrary = new BookLibrary(libraryDatabaseMock);
         LibraryUser libraryUser = new LibraryUser("John", "Doe", "111222333");
 
         List<Book> listOf0Books = new ArrayList<>();
-        when(libraryDatabaseMock.listBooksInHandsOf(anyObject())).thenReturn(listOf0Books);
+        when(libraryDatabaseMock.listBooksInHandsOf(any(LibraryUser.class))).thenReturn(listOf0Books);
 
         // When
         List<Book> resultListOf0Books = bookLibrary.listBooksInHandsOf(libraryUser);
@@ -101,14 +101,14 @@ public class BookLibraryTestSuite {
     }
 
     @Test
-    public void testListBooksInHandsOfOneBook() {
+    public void testListBooksInHandsOfHolderWithOneBook() {
         // Given
         LibraryDatabase libraryDatabaseMock = mock(LibraryDatabase.class);
         BookLibrary bookLibrary = new BookLibrary(libraryDatabaseMock);
         LibraryUser libraryUser = new LibraryUser("John", "Doe", "111222333");
 
         List<Book> listOf1Book = generateListOfNBooks(1);
-        when(libraryDatabaseMock.listBooksInHandsOf(anyObject())).thenReturn(listOf1Book);
+        when(libraryDatabaseMock.listBooksInHandsOf(any(LibraryUser.class))).thenReturn(listOf1Book);
 
         // When
         List<Book> resultListOf1Book = bookLibrary.listBooksInHandsOf(libraryUser);
@@ -118,14 +118,14 @@ public class BookLibraryTestSuite {
     }
 
     @Test
-    public void testListBooksInHandsOfFiveBooks() {
+    public void testListBooksInHandsOfHolderWithFiveBooks() {
         // Given
         LibraryDatabase libraryDatabaseMock = mock(LibraryDatabase.class);
         BookLibrary bookLibrary = new BookLibrary(libraryDatabaseMock);
         LibraryUser libraryUser = new LibraryUser("John", "Doe", "111222333");
 
         List<Book> listOf5Books = generateListOfNBooks(5);
-        when(libraryDatabaseMock.listBooksInHandsOf(anyObject())).thenReturn(listOf5Books);
+        when(libraryDatabaseMock.listBooksInHandsOf(any(LibraryUser.class))).thenReturn(listOf5Books);
 
         // When
         List<Book> resultListOf5Books = bookLibrary.listBooksInHandsOf(libraryUser);
