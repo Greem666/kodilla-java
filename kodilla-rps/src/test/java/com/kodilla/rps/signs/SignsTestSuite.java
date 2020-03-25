@@ -36,7 +36,6 @@ public class SignsTestSuite {
         Boolean paperVsRock = paper.isStrongerThan(rock);
         Boolean paperVsScissors = paper.isStrongerThan(scissors);
         Boolean paperVsPaper = paper.isStrongerThan(paper);
-        System.out.println(paperVsRock + " " + paperVsScissors + " " + paperVsPaper);
 
         // Then
         Assert.assertTrue(paperVsRock);

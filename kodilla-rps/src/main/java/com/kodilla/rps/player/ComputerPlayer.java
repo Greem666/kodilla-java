@@ -1,6 +1,8 @@
 package com.kodilla.rps.player;
 
 import com.kodilla.rps.signs.ISign;
+
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.stream.Collectors;
@@ -14,32 +16,33 @@ public class ComputerPlayer extends AbstractPlayer {
     }
 
     public ISign pickASign(int humanChoice) {
-        ISign humanPlayersSign = this.signOptions.get(humanChoice);
+        ISign humanPlayerSign = this.signOptions.get(humanChoice);
         int decision = decisionMaker.nextInt(100);
         if (decision < 25) {
-            return pickDrawSign(humanPlayersSign);
+            this.sign = pickDrawingSign(humanPlayerSign);
         } else if (decision < 50) {
-            return pickLoseSign(humanPlayersSign);
+            this.sign = pickLosingSign(humanPlayerSign);
         } else {
-            return pickWinSign(humanPlayersSign);
+            this.sign = pickWinningSign(humanPlayerSign);
         }
+        return this.sign;
     }
 
-    private ISign pickDrawSign(ISign sign) {
+    private ISign pickDrawingSign(ISign sign) {
         return sign;
     }
 
-    private ISign pickLoseSign(ISign sign) {
-        return this.signOptions.entrySet().stream()
-                .filter(e -> !e.getValue().isStrongerThan(sign))
-                .map(Map.Entry::getValue)
+    private ISign pickLosingSign(ISign sign) {
+        return this.getSignOptions().values().stream()
+                .filter(e -> e.isStrongerThan(sign)!=null)
+                .filter(e -> !e.isStrongerThan(sign))
                 .collect(Collectors.toList()).get(0);
     }
 
-    private ISign pickWinSign(ISign sign) {
-        return this.signOptions.entrySet().stream()
-                .filter(e -> e.getValue().isStrongerThan(sign))
-                .map(Map.Entry::getValue)
+    private ISign pickWinningSign(ISign sign) {
+        return this.getSignOptions().values().stream()
+                .filter(e -> e.isStrongerThan(sign)!=null)
+                .filter(e -> e.isStrongerThan(sign))
                 .collect(Collectors.toList()).get(0);
     }
 }

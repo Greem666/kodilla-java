@@ -2,12 +2,8 @@ package com.kodilla.rps.service;
 
 import com.kodilla.rps.player.AbstractPlayer;
 import com.kodilla.rps.player.ComputerPlayer;
-import com.kodilla.rps.player.Player;
+import com.kodilla.rps.player.HumanPlayer;
 import com.kodilla.rps.player.Referee;
-import com.kodilla.rps.signs.ISign;
-import com.kodilla.rps.signs.Paper;
-import com.kodilla.rps.signs.Rock;
-import com.kodilla.rps.signs.Scissors;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +32,8 @@ public class RpsService {
             humanPlayer.pickASign(playerChoice);
             computerPlayer.pickASign(playerChoice);
 
-            referee.checkWhoWon(humanPlayer, computerPlayer);
+            AbstractPlayer winner = referee.checkWhoWonTheRound(humanPlayer, computerPlayer);
+
         }
 
 
@@ -44,7 +41,7 @@ public class RpsService {
 
     private void createHumanPlayer() {
         String playerName = askForPlayerName();
-        players.add(new Player(playerName));
+        players.add(new HumanPlayer(playerName));
     }
 
     private void createComputerPlayer() {

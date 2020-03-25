@@ -22,16 +22,24 @@ public class Referee {
             }
             scanner.nextLine();
         }
+        System.out.println("Round wins needed to win the game: " + this.roundsToWinTheGame + ".");
     }
 
-    public AbstractPlayer checkWhoWon(AbstractPlayer humanPlayer, AbstractPlayer computerPlayer) {
+    public AbstractPlayer checkWhoWonTheRound(AbstractPlayer humanPlayer, AbstractPlayer computerPlayer) {
         AbstractPlayer winner = null;
-        if (humanPlayer.getSign().isStrongerThan(computerPlayer.getSign())) {
-            humanPlayer.incrementWinsCount();
-            winner = humanPlayer;
-        } else if (humanPlayer.getSign().isStrongerThan(computerPlayer.getSign()) == false) {
-            computerPlayer.incrementWinsCount();
-            winner = computerPlayer;
+
+        ISign humanPlayerSign = humanPlayer.getSign();
+        ISign computerPlayerSign = computerPlayer.getSign();
+        Boolean humanIsVictorious = humanPlayerSign.isStrongerThan(computerPlayerSign);
+
+        if (humanIsVictorious != null) {  // it can be null if both signs are equal
+            if (humanIsVictorious) {
+                humanPlayer.incrementWinsCount();
+                winner = humanPlayer;
+            } else if (!humanIsVictorious) {
+                computerPlayer.incrementWinsCount();
+                winner = computerPlayer;
+            }
         }
         return winner;
     }

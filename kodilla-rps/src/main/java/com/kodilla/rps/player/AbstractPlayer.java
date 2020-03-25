@@ -12,12 +12,18 @@ public abstract class AbstractPlayer {
     protected String name;
     protected int winsCount;
     protected ISign sign;
-    protected HashMap<Integer, ISign> signOptions = new HashMap<>();
+    protected final HashMap<Integer, ISign> signOptions;
 
     public AbstractPlayer() {
+        this.winsCount = 0;
+        this.signOptions = new HashMap<>();
         signOptions.put(1, new Rock());
         signOptions.put(2, new Paper());
         signOptions.put(3, new Scissors());
+    }
+
+    public HashMap<Integer, ISign> getSignOptions() {
+        return new HashMap<Integer, ISign>(signOptions);
     }
 
     public abstract ISign pickASign(int signNumber);
@@ -44,6 +50,6 @@ public abstract class AbstractPlayer {
 
     @Override
     public String toString() {
-        return "Player: " + this.name + "(wins: " + this.winsCount + ")";
+        return "Player: " + this.name + " (wins: " + this.winsCount + ")";
     }
 }

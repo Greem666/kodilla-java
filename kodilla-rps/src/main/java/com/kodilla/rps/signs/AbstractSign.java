@@ -31,6 +31,11 @@ public abstract class AbstractSign implements ISign {
         return Objects.hash(name);
     }
 
+    @Override
+    public String toString() {
+        return "Sign: " + name;
+    }
+
     public String getName() {
         return this.name;
     }
