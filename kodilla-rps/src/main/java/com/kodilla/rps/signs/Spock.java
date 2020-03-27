@@ -1,24 +1,23 @@
 package com.kodilla.rps.signs;
 
 import java.util.ArrayList;
-import java.util.List;
 
-public class Rock extends AbstractSign {
-    private final int positionNumber = 1;
+public class Spock extends AbstractSign {
+    private final int positionNumber = 5;
 
-    public Rock() {
+    public Spock() {
         this(true);
     }
 
-    public Rock(boolean includeComparators) {
-        this.name = "Rock";
+    public Spock(boolean includeComparators) {
+        this.name = "Spock";
         this.weakerThan = new ArrayList<>();
         this.strongerThan = new ArrayList<>();
         if (includeComparators) {
             this.weakerThan.add(new Paper(false));
-            this.weakerThan.add(new Spock(false));
+            this.weakerThan.add(new Lizard(false));
+            this.strongerThan.add(new Rock(false));
             this.strongerThan.add(new Scissors(false));
-            this.strongerThan.add(new Lizard(false));
         }
     }
 }

@@ -1,28 +1,81 @@
 package com.kodilla.rps.player;
 
 import com.kodilla.rps.signs.ISign;
+import com.kodilla.rps.signs.SignFactory;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class Referee {
     private int humanPlayerScore = 0;
     private int computerPlayerScore = 0;
     private int roundsToWinTheGame = 0;
     private Scanner scanner = new Scanner(System.in);
+    SignFactory signFactory = new SignFactory();
 
-    public void askForGameWinCount() {
+    public int chosePlayerAction() {
+        List<Integer> allowedInts = new ArrayList<>(signFactory.getSignOptions().keySet());
+        List<String> allowedStrs = new ArrayList<>(Arrays.asList("x", "n"));
+        String gameOptions = signFactory.getSignOptions().entrySet().stream()
+                .map(e -> e.getKey().toString() + " - " + e.getValue().toString())
+                .collect(Collectors.joining(", "));
+
         while(true) {
-            System.out.print("(Referee) Please enter number of rounds needed to win the game: ");
+            System.out.print("(Referee) " + gameOptions + ": ");
+
             if (scanner.hasNextInt()) {
-                this.roundsToWinTheGame = scanner.nextInt();
-                break;
+                int chosenInt = Integer.parseInt(scanner.next());
+                scanner.nextLine();
+
+                if (allowedInts.contains(chosenInt)) {
+                    return chosenInt;
+                } else {
+                    System.out.println("(Referee) Incorrect int choice. Try again.");
+                }
             } else {
+                String chosenStr = scanner.nextLine().toLowerCase();
+
+                if (allowedStrs.contains(chosenStr)) {
+                    return chosenStr.equals("x") ? 9 : 0;
+                } else {
+                    System.out.println("(Referee) Incorrect str choice. Try again.");
+                }
+            }
+//            scanner.nextLine();
+        }
+    }
+
+    public int askForRoundsToWinGame() {
+        int counter = 0;
+        while(counter < 3) {
+            System.out.print("(Referee) Please enter number of rounds needed to win the game: ");
+
+            try {
+                int input = Integer.parseInt(scanner.next());
+                if (input > 0 && input <= 10) {
+                    this.roundsToWinTheGame = input;
+                    break;
+                } else {
+                    System.out.println("(Referee) Rounds needed for winning the game should be in 0 - 10 range. Try again.");
+                }
+            } catch (NumberFormatException e){
                 System.out.println("(Referee) Incorrect entry, please try again.");
             }
-            scanner.nextLine();
+
+            counter++;
         }
-        System.out.println("Round wins needed to win the game: " + this.roundsToWinTheGame + ".");
+
+        if (counter == 3) {
+            System.out.println("(Referee) No correct entry detected.");
+            this.roundsToWinTheGame = -1;
+        } else {
+            System.out.println("(Referee) Round wins needed to win the game: " + this.roundsToWinTheGame + ".");
+        }
+
+        return this.roundsToWinTheGame;
     }
 
     public AbstractPlayer checkWhoWonTheRound(AbstractPlayer humanPlayer, AbstractPlayer computerPlayer) {
@@ -55,5 +108,23 @@ public class Referee {
             winner = computerPlayer;
         }
         return winner;
+    }
+
+    public void resetState() {
+        this.humanPlayerScore = 0;
+        this.computerPlayerScore = 0;
+        this.roundsToWinTheGame = 0;
+    }
+
+    public int getHumanPlayerScore() {
+        return humanPlayerScore;
+    }
+
+    public int getComputerPlayerScore() {
+        return computerPlayerScore;
+    }
+
+    public int getRoundsToWinTheGame() {
+        return roundsToWinTheGame;
     }
 }

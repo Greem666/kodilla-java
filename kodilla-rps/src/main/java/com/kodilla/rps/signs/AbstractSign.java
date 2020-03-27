@@ -7,6 +7,7 @@ public abstract class AbstractSign implements ISign {
     protected String name;
     protected List<ISign> weakerThan;
     protected List<ISign> strongerThan;
+    public int positionNumber;
 
     public Boolean isStrongerThan(ISign sign) {
         if (this.weakerThan.contains(sign)) {
@@ -33,10 +34,14 @@ public abstract class AbstractSign implements ISign {
 
     @Override
     public String toString() {
-        return "Sign: " + name;
+        return this.name;
     }
 
     public String getName() {
         return this.name;
+    }
+
+    public int getPositionNumber() {
+        return positionNumber;
     }
 }

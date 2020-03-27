@@ -1,10 +1,8 @@
 package com.kodilla.rps.player;
 
-import com.kodilla.rps.signs.ISign;
-import com.kodilla.rps.signs.Paper;
-import com.kodilla.rps.signs.Rock;
-import com.kodilla.rps.signs.Scissors;
+import com.kodilla.rps.signs.*;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -12,18 +10,11 @@ public abstract class AbstractPlayer {
     protected String name;
     protected int winsCount;
     protected ISign sign;
-    protected final HashMap<Integer, ISign> signOptions;
+    protected SignFactory signFactory;
 
     public AbstractPlayer() {
         this.winsCount = 0;
-        this.signOptions = new HashMap<>();
-        signOptions.put(1, new Rock());
-        signOptions.put(2, new Paper());
-        signOptions.put(3, new Scissors());
-    }
-
-    public HashMap<Integer, ISign> getSignOptions() {
-        return new HashMap<Integer, ISign>(signOptions);
+        this.signFactory = new SignFactory();
     }
 
     public abstract ISign pickASign(int signNumber);
@@ -46,6 +37,10 @@ public abstract class AbstractPlayer {
 
     public int getWinsCount() {
         return winsCount;
+    }
+
+    public void resetWinsCount() {
+        this.winsCount = 0;
     }
 
     @Override

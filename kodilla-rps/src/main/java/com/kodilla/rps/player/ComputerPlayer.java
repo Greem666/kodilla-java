@@ -15,8 +15,12 @@ public class ComputerPlayer extends AbstractPlayer {
         this.name = "Computer";
     }
 
-    public ISign pickASign(int humanChoice) {
-        ISign humanPlayerSign = this.signOptions.get(humanChoice);
+    public ISign pickASign(int signNumber) {
+        return pickASign(signNumber, true);
+    }
+
+    public ISign pickASign(int humanChoice, boolean verbose) {
+        ISign humanPlayerSign = this.signFactory.getSign(humanChoice);
         int decision = decisionMaker.nextInt(100);
         if (decision < 25) {
             this.sign = pickDrawingSign(humanPlayerSign);
@@ -24,6 +28,9 @@ public class ComputerPlayer extends AbstractPlayer {
             this.sign = pickLosingSign(humanPlayerSign);
         } else {
             this.sign = pickWinningSign(humanPlayerSign);
+        }
+        if (verbose) {
+            System.out.println(String.format("%s picked a %s (rolled %d / 100).", this.name, this.sign, decision));
         }
         return this.sign;
     }
@@ -33,16 +40,18 @@ public class ComputerPlayer extends AbstractPlayer {
     }
 
     private ISign pickLosingSign(ISign sign) {
-        return this.getSignOptions().values().stream()
+        List<ISign> losingSigns = this.signFactory.getSignOptions().values().stream()
                 .filter(e -> e.isStrongerThan(sign)!=null)
                 .filter(e -> !e.isStrongerThan(sign))
-                .collect(Collectors.toList()).get(0);
+                .collect(Collectors.toList());
+        return losingSigns.get(decisionMaker.nextInt(losingSigns.size()));
     }
 
     private ISign pickWinningSign(ISign sign) {
-        return this.getSignOptions().values().stream()
+        List<ISign> winningSigns = this.signFactory.getSignOptions().values().stream()
                 .filter(e -> e.isStrongerThan(sign)!=null)
                 .filter(e -> e.isStrongerThan(sign))
-                .collect(Collectors.toList()).get(0);
+                .collect(Collectors.toList());
+        return winningSigns.get(decisionMaker.nextInt(winningSigns.size()));
     }
 }

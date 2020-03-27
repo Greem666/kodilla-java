@@ -1,9 +1,6 @@
 package com.kodilla.rps.player;
 
-import com.kodilla.rps.signs.ISign;
-import com.kodilla.rps.signs.Paper;
-import com.kodilla.rps.signs.Rock;
-import com.kodilla.rps.signs.Scissors;
+import com.kodilla.rps.signs.*;
 import org.junit.*;
 import org.mockito.stubbing.Answer;
 
@@ -18,6 +15,8 @@ public class ComputerPlayerTestSuite {
     ISign rock;
     ISign paper;
     ISign scissors;
+    ISign lizard;
+    ISign spock;
 
     @BeforeClass
     public static void beforeAllTests() {
@@ -30,6 +29,8 @@ public class ComputerPlayerTestSuite {
         this.rock = new Rock();
         this.paper = new Paper();
         this.scissors = new Scissors();
+        this.lizard = new Lizard();
+        this.spock = new Spock();
     }
     @After
     public void afterEachTest() {
@@ -49,18 +50,22 @@ public class ComputerPlayerTestSuite {
         counter.put(paper, 0);
         counter.put(rock, 0);
         counter.put(scissors, 0);
+        counter.put(lizard, 0);
+        counter.put(spock, 0);
 
         // When
-        int testCount = 1000000;
+        int testCount = 100000;
         for (int i = 0; i < testCount; i++) {
-            ISign result = this.computerPlayer.pickASign(1);  // 1 - Rock according to AbstractPlayer's HashMap
+            ISign result = this.computerPlayer.pickASign(1, false);  // 1 - Rock according to AbstractPlayer's HashMap
             counter.put(result, counter.get(result)+1);
         }
 
         // Then
-        Assert.assertTrue(testCount * 0.24 < counter.get(scissors) && counter.get(scissors) < testCount * 0.26);
+        Assert.assertTrue(testCount * 0.12 < counter.get(scissors) && counter.get(scissors) < testCount * 0.13);
+        Assert.assertTrue(testCount * 0.12 < counter.get(lizard) && counter.get(lizard) < testCount * 0.13);
         Assert.assertTrue(testCount * 0.24 < counter.get(rock) && counter.get(rock) < testCount * 0.26);
-        Assert.assertTrue(testCount * 0.48 < counter.get(paper) && counter.get(paper) < testCount * 0.52);
+        Assert.assertTrue(testCount * 0.24 < counter.get(paper) && counter.get(paper) < testCount * 0.26);
+        Assert.assertTrue(testCount * 0.24 < counter.get(spock) && counter.get(spock) < testCount * 0.26);
     }
     @Test
     public void testPickASignWin50Draw25Loss25RatioPaper() {
@@ -71,18 +76,23 @@ public class ComputerPlayerTestSuite {
         counter.put(paper, 0);
         counter.put(rock, 0);
         counter.put(scissors, 0);
+        counter.put(lizard, 0);
+        counter.put(spock, 0);
 
         // When
-        int testCount = 1000000;
+        int testCount = 100000;
         for (int i = 0; i < testCount; i++) {
-            ISign result = this.computerPlayer.pickASign(2);  // 2 - Paper according to AbstractPlayer's HashMap
+            ISign result = this.computerPlayer.pickASign(2, false);  // 2 - Paper according to AbstractPlayer's HashMap
             counter.put(result, counter.get(result)+1);
         }
+        System.out.println(counter);
 
         // Then
+        Assert.assertTrue(testCount * 0.12 < counter.get(rock) && counter.get(rock) < testCount * 0.13);
+        Assert.assertTrue(testCount * 0.12 < counter.get(spock) && counter.get(spock) < testCount * 0.13);
         Assert.assertTrue(testCount * 0.24 < counter.get(paper) && counter.get(paper) < testCount * 0.26);
-        Assert.assertTrue(testCount * 0.24 < counter.get(rock) && counter.get(rock) < testCount * 0.26);
-        Assert.assertTrue(testCount * 0.48 < counter.get(scissors) && counter.get(scissors) < testCount * 0.52);
+        Assert.assertTrue(testCount * 0.24 < counter.get(scissors) && counter.get(scissors) < testCount * 0.26);
+        Assert.assertTrue(testCount * 0.24 < counter.get(lizard) && counter.get(lizard) < testCount * 0.26);
     }
     @Test
     public void testPickASignWin50Draw25Loss25RatioScissors() {
@@ -93,18 +103,74 @@ public class ComputerPlayerTestSuite {
         counter.put(paper, 0);
         counter.put(rock, 0);
         counter.put(scissors, 0);
+        counter.put(lizard, 0);
+        counter.put(spock, 0);
 
         // When
-        int testCount = 1000000;
+        int testCount = 100000;
         for (int i = 0; i < testCount; i++) {
-            ISign result = this.computerPlayer.pickASign(3);  // 3 - Scissors according to AbstractPlayer's HashMap
+            ISign result = this.computerPlayer.pickASign(3, false);  // 3 - Scissors according to AbstractPlayer's HashMap
             counter.put(result, counter.get(result)+1);
         }
 
         // Then
-        Assert.assertTrue(testCount * 0.24 < counter.get(paper) && counter.get(paper) < testCount * 0.26);
+        Assert.assertTrue(testCount * 0.12 < counter.get(lizard) && counter.get(lizard) < testCount * 0.13);
+        Assert.assertTrue(testCount * 0.12 < counter.get(paper) && counter.get(paper) < testCount * 0.13);
         Assert.assertTrue(testCount * 0.24 < counter.get(scissors) && counter.get(scissors) < testCount * 0.26);
-        Assert.assertTrue(testCount * 0.48 < counter.get(rock) && counter.get(rock) < testCount * 0.52);
+        Assert.assertTrue(testCount * 0.24 < counter.get(rock) && counter.get(rock) < testCount * 0.26);
+        Assert.assertTrue(testCount * 0.24 < counter.get(spock) && counter.get(spock) < testCount * 0.26);
+    }
+    @Test
+    public void testPickASignWin50Draw25Loss25RatioLizard() {
+        // Given
+        // Declarations in @Before
+        System.out.println("Reaction to player sign Lizard (expected 50% win ratio, 25% draw and loss ratios).");
+        HashMap<ISign,Integer> counter = new HashMap<>();
+        counter.put(paper, 0);
+        counter.put(rock, 0);
+        counter.put(scissors, 0);
+        counter.put(lizard, 0);
+        counter.put(spock, 0);
+
+        // When
+        int testCount = 100000;
+        for (int i = 0; i < testCount; i++) {
+            ISign result = this.computerPlayer.pickASign(4, false);  // 3 - Scissors according to AbstractPlayer's HashMap
+            counter.put(result, counter.get(result)+1);
+        }
+
+        // Then
+        Assert.assertTrue(testCount * 0.12 < counter.get(paper) && counter.get(paper) < testCount * 0.13);
+        Assert.assertTrue(testCount * 0.12 < counter.get(spock) && counter.get(spock) < testCount * 0.13);
+        Assert.assertTrue(testCount * 0.24 < counter.get(lizard) && counter.get(lizard) < testCount * 0.26);
+        Assert.assertTrue(testCount * 0.24 < counter.get(rock) && counter.get(rock) < testCount * 0.26);
+        Assert.assertTrue(testCount * 0.24 < counter.get(scissors) && counter.get(scissors) < testCount * 0.26);
+    }
+    @Test
+    public void testPickASignWin50Draw25Loss25RatioSpock() {
+        // Given
+        // Declarations in @Before
+        System.out.println("Reaction to player sign Lizard (expected 50% win ratio, 25% draw and loss ratios).");
+        HashMap<ISign,Integer> counter = new HashMap<>();
+        counter.put(paper, 0);
+        counter.put(rock, 0);
+        counter.put(scissors, 0);
+        counter.put(lizard, 0);
+        counter.put(spock, 0);
+
+        // When
+        int testCount = 100000;
+        for (int i = 0; i < testCount; i++) {
+            ISign result = this.computerPlayer.pickASign(5, false);  // 3 - Scissors according to AbstractPlayer's HashMap
+            counter.put(result, counter.get(result)+1);
+        }
+
+        // Then
+        Assert.assertTrue(testCount * 0.12 < counter.get(scissors) && counter.get(scissors) < testCount * 0.13);
+        Assert.assertTrue(testCount * 0.12 < counter.get(rock) && counter.get(rock) < testCount * 0.13);
+        Assert.assertTrue(testCount * 0.24 < counter.get(spock) && counter.get(spock) < testCount * 0.26);
+        Assert.assertTrue(testCount * 0.24 < counter.get(lizard) && counter.get(lizard) < testCount * 0.26);
+        Assert.assertTrue(testCount * 0.24 < counter.get(paper) && counter.get(paper) < testCount * 0.26);
     }
 
 //    @Test

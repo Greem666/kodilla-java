@@ -1,9 +1,6 @@
 package com.kodilla.rps.player;
 
-import com.kodilla.rps.signs.ISign;
-import com.kodilla.rps.signs.Paper;
-import com.kodilla.rps.signs.Rock;
-import com.kodilla.rps.signs.Scissors;
+import com.kodilla.rps.signs.*;
 import org.junit.*;
 
 import static org.mockito.Mockito.mock;
@@ -14,6 +11,8 @@ public class HumanPlayerTestSuite {
     ISign rock;
     ISign paper;
     ISign scissors;
+    ISign lizard;
+    ISign spock;
 
     @BeforeClass
     public static void beforeAllTests() {
@@ -26,6 +25,8 @@ public class HumanPlayerTestSuite {
         this.rock = new Rock();
         this.paper = new Paper();
         this.scissors = new Scissors();
+        this.lizard = new Lizard();
+        this.spock = new Spock();
     }
     @After
     public void afterEachTest() {
@@ -34,21 +35,6 @@ public class HumanPlayerTestSuite {
     @AfterClass
     public static void afterAllTests() {
         System.out.println("Ending HumanPlayer class tests.");
-    }
-
-    @Test
-    public void testSignOptionsCorrectContent() {
-        // Given
-        // Declarations in @Before
-        System.out.println("Correct content of signOptions.");
-
-        // When
-
-        // Then
-        Assert.assertEquals(3, humanPlayer.signOptions.size());
-        Assert.assertEquals(rock, humanPlayer.signOptions.get(1));
-        Assert.assertEquals(paper, humanPlayer.signOptions.get(2));
-        Assert.assertEquals(scissors, humanPlayer.signOptions.get(3));
     }
 
     @Test
@@ -78,23 +64,31 @@ public class HumanPlayerTestSuite {
         // When
         ISign initialSignAfterInitialization = this.humanPlayer.getSign();
 
-        ISign signReturnedAfterSelectingNegativeValue = this.humanPlayer.pickASign(-99);
+        //        Incorrect values
+        ISign signReturnedAfterSelectingNegativeValue = this.humanPlayer.pickASign(-99, false);
         ISign signHeldInFieldAfterSelectingNegativeValue = this.humanPlayer.getSign();
 
-        ISign signReturnedAfterSelectingZero = this.humanPlayer.pickASign(0);
+        ISign signReturnedAfterSelectingZero = this.humanPlayer.pickASign(0, false);
         ISign signHeldInFieldAfterSelectingZero = this.humanPlayer.getSign();
 
-        ISign signReturnedAfterSelecting4 = this.humanPlayer.pickASign(4);
-        ISign signHeldInFieldAfterSelecting4 = this.humanPlayer.getSign();
+        ISign signReturnedAfterSelecting6 = this.humanPlayer.pickASign(6, false);
+        ISign signHeldInFieldAfterSelecting6 = this.humanPlayer.getSign();
 
-        ISign signReturnedAfterSelecting1 = this.humanPlayer.pickASign(1);
+        //      Correct values
+        ISign signReturnedAfterSelecting1 = this.humanPlayer.pickASign(1, false);
         ISign signHeldInFieldAfterSelecting1 = this.humanPlayer.getSign();
 
-        ISign signReturnedAfterSelecting2 = this.humanPlayer.pickASign(2);
+        ISign signReturnedAfterSelecting2 = this.humanPlayer.pickASign(2, false);
         ISign signHeldInFieldAfterSelecting2 = this.humanPlayer.getSign();
 
-        ISign signReturnedAfterSelecting3 = this.humanPlayer.pickASign(3);
+        ISign signReturnedAfterSelecting3 = this.humanPlayer.pickASign(3, false);
         ISign signHeldInFieldAfterSelecting3 = this.humanPlayer.getSign();
+
+        ISign signReturnedAfterSelecting4 = this.humanPlayer.pickASign(4, false);
+        ISign signHeldInFieldAfterSelecting4 = this.humanPlayer.getSign();
+
+        ISign signReturnedAfterSelecting5 = this.humanPlayer.pickASign(5, false);
+        ISign signHeldInFieldAfterSelecting5 = this.humanPlayer.getSign();
 
         // Then
         Assert.assertNull(initialSignAfterInitialization);
@@ -102,14 +96,18 @@ public class HumanPlayerTestSuite {
         Assert.assertNull(signHeldInFieldAfterSelectingNegativeValue);
         Assert.assertNull(signReturnedAfterSelectingZero);
         Assert.assertNull(signHeldInFieldAfterSelectingZero);
-        Assert.assertNull(signReturnedAfterSelecting4);
-        Assert.assertNull(signHeldInFieldAfterSelecting4);
+        Assert.assertNull(signReturnedAfterSelecting6);
+        Assert.assertNull(signHeldInFieldAfterSelecting6);
         Assert.assertEquals(rock, signReturnedAfterSelecting1);
         Assert.assertEquals(rock, signHeldInFieldAfterSelecting1);
         Assert.assertEquals(paper, signReturnedAfterSelecting2);
         Assert.assertEquals(paper, signHeldInFieldAfterSelecting2);
         Assert.assertEquals(scissors, signReturnedAfterSelecting3);
         Assert.assertEquals(scissors, signHeldInFieldAfterSelecting3);
+        Assert.assertEquals(lizard, signReturnedAfterSelecting4);
+        Assert.assertEquals(lizard, signHeldInFieldAfterSelecting4);
+        Assert.assertEquals(spock, signReturnedAfterSelecting5);
+        Assert.assertEquals(spock, signHeldInFieldAfterSelecting5);
     }
 
     @Test
@@ -119,7 +117,7 @@ public class HumanPlayerTestSuite {
         System.out.println("Correct sign resetting.");
 
         // When
-        this.humanPlayer.pickASign(1);
+        this.humanPlayer.pickASign(1, false);
         this.humanPlayer.resetSign();
         ISign signHeldInFieldAfterResettingSign = this.humanPlayer.getSign();
 
@@ -162,5 +160,23 @@ public class HumanPlayerTestSuite {
         // Then
         Assert.assertEquals(expectedInstanceString, initialInstanceString);
         Assert.assertEquals(expectedInstanceStringAfter3WinsIncrementations, instanceStringAfter3WinsIncrementations);
+    }
+
+    @Test
+    public void testResetWinsCount() {
+        // Given
+        // Declarations in @Before
+        System.out.println("Wins count resetting.");
+
+        // When
+        humanPlayer.incrementWinsCount();
+        humanPlayer.incrementWinsCount();
+        humanPlayer.incrementWinsCount();
+
+        // Then
+        Assert.assertEquals(3, humanPlayer.getWinsCount());
+        humanPlayer.resetWinsCount();
+        Assert.assertEquals(0, humanPlayer.getWinsCount());
+
     }
 }
