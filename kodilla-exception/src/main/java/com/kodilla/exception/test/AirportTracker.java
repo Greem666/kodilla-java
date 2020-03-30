@@ -37,7 +37,7 @@ public class AirportTracker {
         for (List<String> airportList: new List[]{listAvailableCzechAirports(), listAvailableGermanAirports(),
                 listAvailableUkrainianAirports(), listAvailableFrenchAirports()}) {
 
-            NullAirportListHandler.safeAddToList(listsOfOtherAirports, airportList);
+//            NullAirportListHandler.safeAddToList(listsOfOtherAirports, airportList);
         }
 
         return listsOfOtherAirports.stream()
@@ -66,22 +66,32 @@ public class AirportTracker {
     }
 
     private List<String> listAirports(String fileName) {
+        List<String> listOfAirports = new ArrayList<>();
         try {
-            return readInAirports(fileName);
+            listOfAirports.addAll(0, readInAirports(fileName));
+        } catch (AirportFileNotFoundException e) {
+            System.out.println("No airport file " + e.getMessage() + " found. Skipping...");
         } catch (IOException e) {
-            throw new NullPointerException("List of " + fileName + " not found!");
+            System.out.println("IOException, while trying to read file " + fileName + ". Skipping...");
         }
+        return listOfAirports;
     }
 
-    private List<String> readInAirports(String fileName) throws IOException {
+    private List<String> readInAirports(String fileName) throws AirportFileNotFoundException, IOException {
         String relativeFilePath = "airports/" + fileName;
         ClassLoader classLoader = getClass().getClassLoader();
-        File file = new File(classLoader.getResource(relativeFilePath).getFile());
-        Path path = Paths.get(file.getPath());
 
-        Stream<String> fileLines = Files.lines(path);
-        List<String> availableAirports = fileLines.collect(Collectors.toList());
+        try {
+            File file = new File(classLoader.getResource(relativeFilePath).getFile());
+            Path path = Paths.get(file.getPath());
 
-        return availableAirports;
+            Stream<String> fileLines = Files.lines(path);
+            List<String> availableAirports = fileLines.collect(Collectors.toList());
+
+            return availableAirports;
+
+        } catch (NullPointerException e) {
+            throw new AirportFileNotFoundException(fileName);
+        }
     }
 }

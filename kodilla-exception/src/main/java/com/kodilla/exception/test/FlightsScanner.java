@@ -7,17 +7,17 @@ import java.util.Random;
 public class FlightsScanner {
     private AirportTracker airportTracker;
     private Random random;
+    private Map<String, Boolean> flightsMap;
 
     public FlightsScanner() {
         this.airportTracker = new AirportTracker();
-        random = new Random();
+        this.random = new Random();
+        this.flightsMap = new AirportTracker().listAllAirports();
     }
 
     public Flight findFlight(Flight flight) throws RouteNotFoundException{
-        Map<String, Boolean> flightsMap = new AirportTracker().listAllAirports();
-
         String originAirport = flight.getDepartureAirport();
-        String destinationAirport = flight.getDepartureAirport();
+        String destinationAirport = flight.getArrivalAirport();
 
         if (!flightsMap.keySet().contains(originAirport)) {
             throw new RouteNotFoundException("Origin airport " + originAirport + " was not found on the map!");
