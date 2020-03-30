@@ -74,7 +74,7 @@ public class AirportTracker {
     }
 
     private List<String> readInAirports(String fileName) throws IOException {
-        String relativeFilePath = fileName;
+        String relativeFilePath = "airports/" + fileName;
         ClassLoader classLoader = getClass().getClassLoader();
         File file = new File(classLoader.getResource(relativeFilePath).getFile());
         Path path = Paths.get(file.getPath());
