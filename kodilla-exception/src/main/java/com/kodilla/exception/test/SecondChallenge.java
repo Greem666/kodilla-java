@@ -21,8 +21,10 @@ public class SecondChallenge {
         Random random = new Random();
         double range = 4.0;
         List<double[]> testData = IntStream.range(0, 10)
-                .mapToObj(s -> new double[]{random.nextDouble() * range,
-                        random.nextDouble() * range})
+                .mapToObj(s -> new double[]{
+                        random.nextDouble() * range,
+                        random.nextDouble() * range
+                })
                 .collect(Collectors.toList());
 
         int counter = 1;

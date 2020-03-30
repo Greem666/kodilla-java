@@ -1,0 +1,9 @@
+Gdansk Airport
+Katowice Airport
+Krakow Airport
+Lodz Airport
+Poznan Airport
+Rzeszow Airport
+Szczecin Airport
+Warsaw Airport
+Wroclaw Airport
