@@ -46,19 +46,19 @@ public class AirportTracker {
     }
 
     private List<String> listAvailablePolishAirports() {
-        return listAirports("airports/polishAirports.txt");
+        return listAirports("polishAirports.txt");
     }
 
     private List<String> listAvailableGermanAirports() {
-        return listAirports("airports/germanAirports.txt");
+        return listAirports("germanAirports.txt");
     }
 
     private List<String> listAvailableCzechAirports() {
-        return listAirports("airports/czechAirports.txt");
+        return listAirports("czechAirports.txt");
     }
 
     private List<String> listAvailableUkrainianAirports() {
-        return listAirports("airports/ukrainianAirports.txt");
+        return listAirports("ukrainianAirports.txt");
     }
 
     private List<String> listAvailableFrenchAirports() {
@@ -74,9 +74,9 @@ public class AirportTracker {
     }
 
     private List<String> readInAirports(String fileName) throws IOException {
-        String relativeFilePath = "airports/" + fileName;
+//        String relativeFilePath = "airports/" + fileName;
         ClassLoader classLoader = getClass().getClassLoader();
-        File file = new File(classLoader.getResource(relativeFilePath).getFile());
+        File file = new File(classLoader.getResource(fileName).getFile());
         Path path = Paths.get(file.getPath());
 
         Stream<String> fileLines = Files.lines(path);
