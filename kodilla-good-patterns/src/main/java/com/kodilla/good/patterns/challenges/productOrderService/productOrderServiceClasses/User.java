@@ -1,4 +1,4 @@
-package com.kodilla.good.patterns.challenges.productOrderServiceClasses;
+package com.kodilla.good.patterns.challenges.productOrderService.productOrderServiceClasses;
 
 import java.sql.Timestamp;
 import java.util.Date;

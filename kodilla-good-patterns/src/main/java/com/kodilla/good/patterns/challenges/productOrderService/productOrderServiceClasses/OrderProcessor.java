@@ -1,4 +1,4 @@
-package com.kodilla.good.patterns.challenges.productOrderServiceClasses;
+package com.kodilla.good.patterns.challenges.productOrderService.productOrderServiceClasses;
 
 public class OrderProcessor {
     private UserGreeter userGreeter;

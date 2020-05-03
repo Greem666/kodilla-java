@@ -1,6 +1,6 @@
-package com.kodilla.good.patterns.challenges.productOrderServiceClasses;
+package com.kodilla.good.patterns.challenges.productOrderService.productOrderServiceClasses;
 
-import com.kodilla.good.patterns.challenges.interfaces.PurchaseReceiver;
+import com.kodilla.good.patterns.challenges.productOrderService.interfaces.PurchaseReceiver;
 
 import java.time.LocalDateTime;
 

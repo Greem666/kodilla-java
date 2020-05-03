@@ -1,6 +1,6 @@
-package com.kodilla.good.patterns.challenges.productOrderServiceClasses;
+package com.kodilla.good.patterns.challenges.productOrderService.productOrderServiceClasses;
 
-import com.kodilla.good.patterns.challenges.interfaces.PurchaseInformer;
+import com.kodilla.good.patterns.challenges.productOrderService.interfaces.PurchaseInformer;
 
 public class ProductPurchaseInformer implements PurchaseInformer {
 

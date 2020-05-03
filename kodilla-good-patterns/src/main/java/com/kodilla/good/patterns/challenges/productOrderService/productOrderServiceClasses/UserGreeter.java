@@ -1,6 +1,6 @@
-package com.kodilla.good.patterns.challenges.productOrderServiceClasses;
+package com.kodilla.good.patterns.challenges.productOrderService.productOrderServiceClasses;
 
-import com.kodilla.good.patterns.challenges.interfaces.GreetingService;
+import com.kodilla.good.patterns.challenges.productOrderService.interfaces.GreetingService;
 
 public class UserGreeter implements GreetingService {
     private User user;

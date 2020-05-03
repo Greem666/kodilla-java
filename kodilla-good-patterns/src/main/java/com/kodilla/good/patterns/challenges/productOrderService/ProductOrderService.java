@@ -1,6 +1,6 @@
-package com.kodilla.good.patterns.challenges;
+package com.kodilla.good.patterns.challenges.productOrderService;
 
-import com.kodilla.good.patterns.challenges.productOrderServiceClasses.*;
+import com.kodilla.good.patterns.challenges.productOrderService.productOrderServiceClasses.*;
 
 public class ProductOrderService {
     public static void main(String[] args) {
