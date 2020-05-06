@@ -1,7 +1,6 @@
 package com.kodilla.good.patterns.challenges.flightSearchEngine;
 
 import com.kodilla.good.patterns.challenges.flightSearchEngine.auxClasses.FlightsList;
-import com.kodilla.good.patterns.challenges.flightSearchEngine.auxClasses.Location;
 import com.kodilla.good.patterns.challenges.flightSearchEngine.auxClasses.RandomTravelGenerator;
 import com.kodilla.good.patterns.challenges.flightSearchEngine.auxClasses.Flight;
 

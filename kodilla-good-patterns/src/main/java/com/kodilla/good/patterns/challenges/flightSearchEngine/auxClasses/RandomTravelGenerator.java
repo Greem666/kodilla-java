@@ -30,39 +30,27 @@ public class RandomTravelGenerator {
         currentTimePoint = LocalDateTime.now().plus(pickRandomDaysDuration());
 
         // ORIGIN
-        Location origin = pickTravelOriginOrDestination(validCitiesCopy, false);
-
-        // TRANSFERS
-        int numberOfTransfers = random.nextInt(5);
-        List<Location> transfers = new ArrayList<>();
-        for (int i = 0; i < numberOfTransfers; i++) {
-            transfers.add(pickTravelOriginOrDestination(validCitiesCopy, true));
-        }
+        String departureAirport = generateRandomCity(validCitiesCopy);
+        LocalDateTime departureDateTime = generateNextDateTimePoint();
 
         // DESTINATION
-        Location destination = pickTravelOriginOrDestination(validCitiesCopy, false);
+        String arrivalAirport = generateRandomCity(validCitiesCopy);
+        LocalDateTime arrivalDateTime = generateNextDateTimePoint();
 
         // COST
-        double cost = random.nextDouble() * 1000 * (transfers.size() + 2);
+        double cost = random.nextDouble() * 1000;
 
-        return new Flight(origin, destination, transfers, cost);
+        return new Flight(departureAirport, departureDateTime, arrivalAirport, arrivalDateTime, cost);
     }
 
-    private Location pickTravelOriginOrDestination(List<String> validCities, boolean isTransfer) {
+    private String generateRandomCity(List<String> validCities) {
         String chosenCity = validCities.get(random.nextInt(validCities.size()));
         validCities.remove(chosenCity);
 
-        if (isTransfer) {
-            LocalDateTime arrivalTime = generateNextTimePoint();
-            LocalDateTime departureTime = generateNextTimePoint();
-            return new Location(chosenCity, arrivalTime, departureTime);
-        } else {
-            LocalDateTime associatedTime = generateNextTimePoint();
-            return new Location(chosenCity, associatedTime);
-        }
+        return chosenCity;
     }
 
-    private LocalDateTime generateNextTimePoint() {
+    private LocalDateTime generateNextDateTimePoint() {
         LocalDateTime associatedTime = currentTimePoint.plus(pickRandomMinutesDuration());
         this.currentTimePoint = associatedTime;
 
@@ -70,7 +58,7 @@ public class RandomTravelGenerator {
     }
 
     private Duration pickRandomMinutesDuration() {
-        return Duration.ofMinutes(random.nextInt(60 * 5));
+        return Duration.ofMinutes(random.nextInt(60 * 8));
     }
 
     private Duration pickRandomDaysDuration() {

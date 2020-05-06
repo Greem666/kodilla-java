@@ -1,87 +1,91 @@
 package com.kodilla.good.patterns.challenges.flightSearchEngine.auxClasses;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class FlightsList {
     private List<Flight> availableFlights;
-    private Map<Location, List<Flight>> originsMap = new HashMap<>();
-    private Map<Location, List<Flight>> destinationsMap = new HashMap<>();
 
-    public FlightsList(List<Flight> availableFlights) {
+    public FlightsList(ArrayList<Flight> availableFlights) {
         this.availableFlights = availableFlights;
-        populateOriginsMap();
-        populateDestinationsMap();
     }
 
     public void findFlightsFromThroughTo(String fromCityName, String throughCityName, String toCityName) {
         System.out.println("----> FLIGHTS FROM " + fromCityName.toUpperCase() + " THROUGH " + throughCityName.toUpperCase() + " TO " + toCityName.toUpperCase() + " <----");
-        List<Flight> matchingFlights = findFlightsFromTo(fromCityName, toCityName, false);
 
-        matchingFlights = matchingFlights.stream()
-                .filter(e -> e.getTransferLocations().contains(new Location(throughCityName)))
-                .collect(Collectors.toList());
-
-        printFlightOptions(matchingFlights);
     }
 
-    public List<Flight> findFlightsFromTo(String fromCityName, String toCityName) {
-        return findFlightsFromTo(fromCityName, toCityName, true);
-    }
+    public ArrayList<LinkedList<Flight>> findFlightsFromTo(String fromCityName, String toCityName) {
+        System.out.println("----> FLIGHTS FROM " + fromCityName.toUpperCase() + " TO " + toCityName.toUpperCase() + " <----");
 
-    public List<Flight> findFlightsFromTo(String fromCityName, String toCityName, Boolean printResults) {
-        List<Flight> matchingFlights = findFlightsToOrFrom(fromCityName, this.originsMap, false);
+        List<Flight> flightsFrom = findFlightsFrom(fromCityName, this.availableFlights, false);
+        List<Flight> flightsTo = findFlightsTo(toCityName, this.availableFlights, false);
 
-        matchingFlights = matchingFlights.stream()
-                .filter(e -> e.getDestination().equals(new Location(toCityName)))
-                .collect(Collectors.toList());
+        ArrayList<LinkedList<Flight>> intersectingFlights = findIntersectingFlights(flightsFrom, flightsTo);
 
-        if (printResults) {
-            System.out.println("----> FLIGHTS FROM " + fromCityName.toUpperCase() + " TO " + toCityName.toUpperCase() + " <----");
-            printFlightOptions(matchingFlights);
+        if (intersectingFlights.size() > 0) {
+            return intersectingFlights;
+        } else {
+            ArrayList<LinkedList<Flight>> flightRoutes = new ArrayList<>(
+                    flightsFrom.stream()
+                            .map(e -> new LinkedList<Flight>(Collections.singletonList(e)))
+                            .collect(Collectors.toCollection(ArrayList::new))
+            );
+
+            for (LinkedList<Flight> flightRoute: flightRoutes) {
+
+//                RECURSION HERE?
+
+                String lastStop = flightRoute.get(flightRoute.size()-1).getArrivalAirport();
+                findFlightsFromTo(lastStop, toCityName);
+
+
+            }
+
         }
+    }
 
-        return matchingFlights;
+    private ArrayList<LinkedList<Flight>> findIntersectingFlights(List<Flight> listA, List<Flight> listB) {
+        return listA.stream()
+                .filter(listB::contains)
+                .map(e -> new LinkedList<Flight>(Collections.singletonList(e)))
+                .collect(Collectors.toCollection(ArrayList::new));
     }
 
     public void findFlightsFrom(String cityName) {
-        System.out.println("----> FLIGHTS FROM " + cityName.toUpperCase() + " <----");
-        findFlightsToOrFrom(cityName, this.originsMap, true);
+        findFlightsFrom(cityName, this.availableFlights, true);
     }
 
-    public void findFlightsTo(String cityName) {
-        System.out.println("----> FLIGHTS TO " + cityName.toUpperCase() + " <----");
-        findFlightsToOrFrom(cityName, this.destinationsMap, true);
-    }
+    public List<Flight> findFlightsFrom(String cityName, List<Flight> flightsList, boolean printResults) {
 
-    private List<Flight> findFlightsToOrFrom(String associatedCityName, Map<Location, List<Flight>> associatedMap, Boolean printResults) {
-        List<Flight> matchingFlights = associatedMap.get(new Location(associatedCityName));
+        List<Flight> matchingFlights = flightsList.stream()
+                .filter(e -> e.getDepartureAirport().equals(cityName))
+                .collect(Collectors.toCollection(ArrayList::new));
 
         if (printResults) {
+            System.out.println("----> FLIGHTS FROM " + cityName.toUpperCase() + " <----");
             printFlightOptions(matchingFlights);
         }
 
         return matchingFlights;
     }
 
-    private void populateOriginsMap() {
-        this.originsMap = this.availableFlights.stream()
-                .collect(Collectors.groupingBy(
-                        e -> new Location(e.getOrigin().getName()),
-                        Collectors.mapping(e -> e, Collectors.toList())
-                        )
-                );
+    public void findFlightsTo(String cityName) {
+        findFlightsTo(cityName, this.availableFlights, true);
     }
 
-    private void populateDestinationsMap() {
-        this.destinationsMap = this.availableFlights.stream()
-                .collect(Collectors.groupingBy(
-                        e -> new Location(e.getDestination().getName()),
-                        Collectors.mapping(e -> e, Collectors.toList())
-                        )
-                );
+    public List<Flight> findFlightsTo(String cityName, List<Flight> flightsList, boolean printResults) {
+
+        List<Flight> matchingFlights = flightsList.stream()
+                .filter(e -> e.getArrivalAirport().equals(cityName))
+                .collect(Collectors.toCollection(ArrayList::new));
+
+        if (printResults) {
+            System.out.println("----> FLIGHTS TO " + cityName.toUpperCase() + " <----");
+            printFlightOptions(matchingFlights);
+        }
+
+        return matchingFlights;
     }
 
     private void printFlightOptions(List<Flight> flights) {
@@ -96,8 +100,8 @@ public class FlightsList {
                 System.out.println("OPTION " + optionNo);
                 System.out.println("********************");
                 System.out.println(String.format("ORIGIN: %s (departure time: %s)",
-                        flight.getOrigin().getName(),
-                        flight.getOrigin().getDepartureTime()));
+                        flight.getDepartureAirport().getName(),
+                        flight.getDepartureAirport().getDepartureTime()));
 
                 List<Location> transfers = flight.getTransferLocations();
                 if (transfers.size() > 0) {
@@ -114,8 +118,8 @@ public class FlightsList {
                 }
 
                 System.out.println(String.format("DESTINATION: %s (arrival time: %s)",
-                        flight.getDestination().getName(),
-                        flight.getDestination().getArrivalTime()));
+                        flight.getArrivalAirport().getName(),
+                        flight.getArrivalAirport().getArrivalTime()));
                 System.out.println(String.format("Total cost: $%.2f", flight.getCost()));
                 System.out.println("********************\n");
 
