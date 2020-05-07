@@ -58,4 +58,9 @@ public class Flight {
     public int hashCode() {
         return Objects.hash(departureAirport, departureDateTime, arrivalAirport, arrivalDateTime);
     }
+
+    @Override
+    public String toString() {
+        return "[" + departureAirport + " -> " + arrivalAirport + "]";
+    }
 }

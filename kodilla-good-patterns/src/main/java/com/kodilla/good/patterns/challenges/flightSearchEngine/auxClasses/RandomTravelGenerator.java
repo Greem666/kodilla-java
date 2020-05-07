@@ -16,8 +16,8 @@ public class RandomTravelGenerator {
     private Random random = new Random();
     private LocalDateTime currentTimePoint;
 
-    public List<Flight> generateRandomFlightRouteBatch(int quantity) {
-        List<Flight> flights = new LinkedList<>();
+    public ArrayList<Flight> generateRandomFlightRouteBatch(int quantity) {
+        ArrayList<Flight> flights = new ArrayList<>();
         for (int i = 0; i < quantity; i++) {
             flights.add(generateRandomFlightRoute());
         }

@@ -4,24 +4,32 @@ import com.kodilla.good.patterns.challenges.flightSearchEngine.auxClasses.Flight
 import com.kodilla.good.patterns.challenges.flightSearchEngine.auxClasses.RandomTravelGenerator;
 import com.kodilla.good.patterns.challenges.flightSearchEngine.auxClasses.Flight;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class FlightSearchEngineRunner {
 
     public static void main(String[] args) {
-        List<Flight> flights = new RandomTravelGenerator().generateRandomFlightRouteBatch(2000);
-        FlightsList flightsList = new FlightsList(flights);
+        ArrayList<Flight> flights = new RandomTravelGenerator().generateRandomFlightRouteBatch(2000);
+//        FlightsList flightsList = new FlightsList(flights);
 
         // Finding flights FROM
-        flightsList.findFlightsFrom("Cracow");
+        ArrayList<Flight> a = FlightsList.findFlightsFrom("Cracow", flights);
+        System.out.println(a);
 
         // Finding flights TO
-        flightsList.findFlightsTo("Cracow");
+        ArrayList<Flight> b = FlightsList.findFlightsTo("Cracow", flights);
+        System.out.println(b);
 
         // Finding flights FROM TO
-        flightsList.findFlightsFromTo("Cracow", "Karlovy Vary");
+        ArrayList<LinkedList<Flight>> c = FlightsList.findFlightsFromTo("Cracow", "Karlovy Vary", flights);
 
-        // Finding flights FROM THROUGH TO
-        flightsList.findFlightsFromThroughTo("Cracow", "Karlovy Vary", "Trencin");
+        for (LinkedList<Flight> e: c) {
+            System.out.println(e);
+        }
+
+//        // Finding flights FROM THROUGH TO
+//        flightsList.findFlightsFromThroughTo("Cracow", "Karlovy Vary", "Trencin");
     }
 }
