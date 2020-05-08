@@ -20,59 +20,84 @@ public class FlightsList {
 
     }
 
-    public static ArrayList<LinkedList<Flight>> findFlightsFromTo(String fromCityName, String toCityName, final ArrayList<Flight> flightsList) {
-//        System.out.println("----> FLIGHTS FROM " + fromCityName.toUpperCase() + " TO " + toCityName.toUpperCase() + " <----");
-
-        ArrayList<Flight> flightsFrom = findFlightsFrom(fromCityName, flightsList, false);
-        ArrayList<Flight> flightsTo = findFlightsTo(toCityName, flightsList, false);
-
-        ArrayList<Flight> intersectingFlights = findIntersectingFlights(flightsFrom, flightsTo);
-
-        if (intersectingFlights.size() > 0) {
-            return new ArrayList<LinkedList<Flight>>(Arrays.asList(new LinkedList<Flight>(flightsTo)));
-        } else {
-            for (Flight flightRoute: flightsTo) {
-                LinkedList<Flight> validFlightRoute = new LinkedList<Flight>();
-
-//                RECURSION HERE?
-
-                String departureAirport = flightRoute.getDepartureAirport();
-    //                ArrayList<Flight> flightListWithoutCurrentFlightRoute = flightsList.stream()
-    //                        .filter(e -> !e.equals(flightRoute))
-    //                        .collect(Collectors.toCollection(ArrayList::new));
-                if (alreadyVisited.contains(flightRoute) ) {
-                    System.out.println(flightRoute + " - already visited, skipping...");
-                    continue;
-                } else if (flightRoute.getDepartureAirport().equals(toCityName)) {
-                    System.out.println(flightRoute + " - cycle detected, skipping...");
-                    continue;
-                } else {
-                    System.out.println(flightRoute + " - valid new path element, continuing search...");
-                    alreadyVisited.add(flightRoute);
-                    validFlightRoute.add(findFlightsFromTo(fromCityName, departureAirport, flightsList).get(0).get(0));
-                    alreadyVisited = new ArrayList<Flight>();
-                    System.out.println("Flight route assembled: " + validFlightRoute);
-                }
-
-                listOfRoutes.add(validFlightRoute);
-            }
-
-
-        }
-
-        return listOfRoutes;
-    }
-
-//    public static ArrayList<LinkedList<Flight>> findFlightsFromTo(String fromCityName, String toCityName, ArrayList<Flight> flightsList) {
+//    public static ArrayList<LinkedList<Flight>> findFlightsFromTo(String fromCityName, String toCityName, final ArrayList<Flight> flightsList) {
+////        System.out.println("----> FLIGHTS FROM " + fromCityName.toUpperCase() + " TO " + toCityName.toUpperCase() + " <----");
+//
 //        ArrayList<Flight> flightsFrom = findFlightsFrom(fromCityName, flightsList, false);
 //        ArrayList<Flight> flightsTo = findFlightsTo(toCityName, flightsList, false);
 //
-//        LinkedList<Flight> travelPlan = new LinkedList<>();
+//        ArrayList<Flight> intersectingFlights = findIntersectingFlights(flightsFrom, flightsTo);
 //
-//        for (Flight startingFlight: flightsFrom) {
+//        if (intersectingFlights.size() > 0) {
+//            return new ArrayList<LinkedList<Flight>>(Arrays.asList(new LinkedList<Flight>(flightsTo)));
+//        } else {
+//            for (Flight flightRoute: flightsTo) {
+//                LinkedList<Flight> validFlightRoute = new LinkedList<Flight>();
+//
+////                RECURSION HERE?
+//
+//                String departureAirport = flightRoute.getDepartureAirport();
+//    //                ArrayList<Flight> flightListWithoutCurrentFlightRoute = flightsList.stream()
+//    //                        .filter(e -> !e.equals(flightRoute))
+//    //                        .collect(Collectors.toCollection(ArrayList::new));
+//                if (alreadyVisited.contains(flightRoute) ) {
+//                    System.out.println(flightRoute + " - already visited, skipping...");
+//                    continue;
+//                } else if (flightRoute.getDepartureAirport().equals(toCityName)) {
+//                    System.out.println(flightRoute + " - cycle detected, skipping...");
+//                    continue;
+//                } else {
+//                    System.out.println(flightRoute + " - valid new path element, continuing search...");
+//                    alreadyVisited.add(flightRoute);
+//                    validFlightRoute.add(findFlightsFromTo(fromCityName, departureAirport, flightsList).get(0).get(0));
+//                    alreadyVisited = new ArrayList<Flight>();
+//                    System.out.println("Flight route assembled: " + validFlightRoute);
+//                }
+//
+//                listOfRoutes.add(validFlightRoute);
+//            }
+//
 //
 //        }
+//
+//        return listOfRoutes;
 //    }
+
+    public static ArrayList<LinkedList<Flight>> findFlightsFromTo(String fromCityName, String toCityName, ArrayList<Flight> flightsList) {
+        ArrayList<Flight> flightsFrom = findFlightsFrom(fromCityName, flightsList, false);
+        ArrayList<Flight> flightsTo = findFlightsTo(toCityName, flightsList, false);
+
+        ArrayList<LinkedList<Flight>> validRoutes = new ArrayList<>();
+
+        for (int i = 0; i < flightsTo.size(); i++) {
+            Flight lastFlight = flightsTo.get(i);
+
+//            System.out.println(lastFlight);
+
+            validRoutes.add(new LinkedList<Flight>());
+            validRoutes.get(i).add(lastFlight);
+
+            if (flightsFrom.contains(lastFlight)) {
+//                System.out.println("Found all connecting flights!");
+                return validRoutes;
+            } else if (!alreadyVisited.contains(lastFlight)){
+//                recursion
+                alreadyVisited.add(lastFlight);
+                String departureAirport = lastFlight.getDepartureAirport();
+                ArrayList<LinkedList<Flight>> recursiveResults = findFlightsFromTo(fromCityName, departureAirport, flightsList);
+
+                LinkedList<Flight> prevResult = validRoutes.get(i);
+                validRoutes.remove(prevResult);
+                for (LinkedList<Flight> result: recursiveResults) {
+                    LinkedList<Flight> updatedResult = new LinkedList<Flight>(prevResult);
+                    updatedResult.addAll(result);
+                    validRoutes.add(updatedResult);
+                }
+//                System.out.println(validRoutes);
+            }
+        }
+        return validRoutes;
+    }
 
     private static ArrayList<Flight> findIntersectingFlights(ArrayList<Flight> listA, ArrayList<Flight> listB) {
         return listA.stream()
