@@ -27,20 +27,17 @@ public class RandomTravelGenerator {
 
     public Flight generateRandomFlightRoute() {
         List<String> validCitiesCopy = new ArrayList<>(validCities);
-        currentTimePoint = LocalDateTime.now().plus(pickRandomDaysDuration());
 
         // ORIGIN
         String departureAirport = generateRandomCity(validCitiesCopy);
-        LocalDateTime departureDateTime = generateNextDateTimePoint();
 
         // DESTINATION
         String arrivalAirport = generateRandomCity(validCitiesCopy);
-        LocalDateTime arrivalDateTime = generateNextDateTimePoint();
 
         // COST
         double cost = random.nextDouble() * 1000;
 
-        return new Flight(departureAirport, departureDateTime, arrivalAirport, arrivalDateTime, cost);
+        return new Flight(departureAirport, arrivalAirport);
     }
 
     private String generateRandomCity(List<String> validCities) {
@@ -49,21 +46,4 @@ public class RandomTravelGenerator {
 
         return chosenCity;
     }
-
-    private LocalDateTime generateNextDateTimePoint() {
-        LocalDateTime associatedTime = currentTimePoint.plus(pickRandomMinutesDuration());
-        this.currentTimePoint = associatedTime;
-
-        return associatedTime;
-    }
-
-    private Duration pickRandomMinutesDuration() {
-        return Duration.ofMinutes(random.nextInt(60 * 8));
-    }
-
-    private Duration pickRandomDaysDuration() {
-        return Duration.ofDays(random.nextInt(365));
-    }
-
-
 }
