@@ -12,7 +12,7 @@ public class TaskFactoryTestSuite {
         // When
         Task shoppingTask = shoppingFactory.createTask();
         boolean initialExecutedStatus = shoppingTask.isTaskExecuted();
-        shoppingTask.executeTask();
+        shoppingTask = shoppingFactory.doTask();
 
         // Then
         Assert.assertEquals("Ferrocious shopping spree", shoppingTask.getTaskName());
@@ -28,7 +28,7 @@ public class TaskFactoryTestSuite {
         // When
         Task drivingTask = drivingFactory.createTask();
         boolean initialExecutedStatus = drivingTask.isTaskExecuted();
-        drivingTask.executeTask();
+        drivingTask = drivingFactory.doTask();
 
         // Then
         Assert.assertEquals("Driving merrily", drivingTask.getTaskName());
@@ -44,7 +44,7 @@ public class TaskFactoryTestSuite {
         // When
         Task paintingTask = paintingFactory.createTask();
         boolean initialExecutedStatus = paintingTask.isTaskExecuted();
-        paintingTask.executeTask();
+        paintingTask = paintingFactory.doTask();
 
         // Then
         Assert.assertEquals("Inspired painting", paintingTask.getTaskName());
