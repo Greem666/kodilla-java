@@ -33,7 +33,7 @@ public class SudokuBoardFactory {
 
             boolean fieldWasEmpty = true;
             do {
-                fieldWasEmpty = board.markCellWithNumber(randX, randY, val);
+                fieldWasEmpty = board.markCellWithNumber(randX, randY, val, true);
             } while (fieldWasEmpty);
 
             preFilledFieldsCount--;
