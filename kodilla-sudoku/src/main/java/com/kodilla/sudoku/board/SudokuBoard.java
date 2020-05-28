@@ -1,8 +1,6 @@
 package com.kodilla.sudoku.board;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.stream.IntStream;
 
 public class SudokuBoard {
@@ -15,72 +13,94 @@ public class SudokuBoard {
         IntStream.range(0, 9).forEach(i -> rows.add(new SudokuRow()));
     }
 
-    public boolean markCellWithNumber(int cellColIdx, int cellRowIdx, int val) {
-        return markCellWithNumber(cellColIdx, cellRowIdx, val, false);
-    }
+    public boolean markCellWithNumber(CoorValDto data) {
+        int cellColIdx = data.getColIdx();
+        int cellRowIdx = data.getRowIdx();
+        int val = data.getVal();
 
-    public boolean markCellWithNumber(int cellColIdx, int cellRowIdx, int val, boolean isStartingValue) {
-        if (isValidInput(cellColIdx, cellRowIdx, val)) {
-            boolean valNotInCol = checkColumnValues(cellColIdx, val);
-            boolean valNotInCube = check3By3Cube(cellColIdx, cellRowIdx, val);
-            if (valNotInCol && valNotInCube) {
-                if (isStartingValue) {
-                    return rows.get(cellRowIdx).setCellStartingValue(cellColIdx, val);
-                } else {
-                    return rows.get(cellRowIdx).setCellValue(cellColIdx, val);
-                }
+        boolean valNotInCol = FieldMarkingValidator.checkColumnValues(cellColIdx, val, this.rows);
+        boolean valNotInRow = FieldMarkingValidator.checkRowValues(cellRowIdx, val, this.rows);
+        boolean valNotIn3By3Cube = FieldMarkingValidator.check3By3CubeValues(cellColIdx, cellRowIdx, val, this.rows);
+        if (valNotInCol && valNotInRow && valNotIn3By3Cube) {
+            boolean valueWasSet = rows.get(cellRowIdx).setColumnValue(cellColIdx, val);
+            if (valueWasSet) {
+                // remove val as a possibility from row, col and 3x3 cube
+                List<Integer> valuesForRemoval = Collections.singletonList(val);
+                removeCellPossibleValuesInRow(data);
+                removeCellPossibleValuesInCol(data);
+                removeCellPossibleValuesIn3By3Cube(data);
             }
+            return valueWasSet;
         }
 
         return false;
     }
 
-    private boolean checkColumnValues(int colIdx, int val) {
-        for (SudokuRow row: rows) {
-            for (SudokuCell cell: row.getCells()) {
-                if (val == cell.getValue()) {
-                    return false;
+    public void removeCellPossibleValuesInRow(CoorValDto data) {
+        try {
+            removeCellPossibleValuesInLine(data, true);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
+    public void removeCellPossibleValuesInCol(CoorValDto data) {
+        try {
+            removeCellPossibleValuesInLine(data, false);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+    }
+
+    public void removeCellPossibleValuesInLine(CoorValDto data, boolean inRow) throws Exception{
+        int cellColIdx = data.getColIdx();
+        int cellRowIdx = data.getRowIdx();
+        int valueForRemoval = data.getVal();
+
+        List<Integer> valuesForRemoval = Collections.singletonList(valueForRemoval);
+        for (int i = 0; i < 9; i++) {
+            if (i != cellColIdx) {
+                if (inRow) {
+                    removeCellPossibleValues(new CoorValDto(i, cellRowIdx, valueForRemoval), valuesForRemoval);
+                } else {
+                    removeCellPossibleValues(new CoorValDto(cellColIdx, i, valueForRemoval), valuesForRemoval);
                 }
             }
         }
-
-        return true;
     }
 
-    private boolean check3By3Cube(int cellColIdx, int cellRowIdx, int val) {
-        ArrayList<Integer> cubeRows = identify3By3CubeIndexes(cellRowIdx);
-        ArrayList<Integer> cubeCols = identify3By3CubeIndexes(cellColIdx);
+    public void removeCellPossibleValuesIn3By3Cube(CoorValDto data) {
+        int cellColIdx = data.getColIdx();
+        int cellRowIdx = data.getRowIdx();
+        int valueForRemoval = data.getVal();
 
-        for (Integer rowIdx: cubeRows) {
-            for (Integer colIdx: cubeCols) {
-                int cellValue = rows.get(rowIdx).getCells().get(colIdx).getValue();
-                if (cellValue == val) {
-                    return false;
+        List<Integer> valuesForRemoval = Collections.singletonList(valueForRemoval);
+        ArrayList<Integer> cubeRows = FieldMarkingValidator.identify3By3CubeIndexes(cellRowIdx);
+        ArrayList<Integer> cubeCols = FieldMarkingValidator.identify3By3CubeIndexes(cellColIdx);
+
+        for (int row: cubeRows) {
+            for (int col: cubeCols) {
+                if (cellColIdx != col && cellRowIdx != row) {
+                    removeCellPossibleValues(data, valuesForRemoval);
                 }
             }
         }
-
-        return true;
     }
 
-    private ArrayList<Integer> identify3By3CubeIndexes(int cellIdx) {
-        ArrayList<Integer> colsToCheck = new ArrayList<>();
-        if (cellIdx <= 3) {
-            colsToCheck.addAll(Arrays.asList(0, 1, 2));
-        } else if (cellIdx <= 6) {
-            colsToCheck.addAll(Arrays.asList(3, 4, 5));
-        } else {
-            colsToCheck.addAll(Arrays.asList(6, 7, 8));
-        }
+    public void removeCellPossibleValues(CoorValDto data, List<Integer> values) {
+        int cellColIdx = data.getColIdx();
+        int cellRowIdx = data.getRowIdx();
 
-        return colsToCheck;
+        SudokuCell cell = rows.get(cellRowIdx).getCellsInRow().get(cellColIdx);
+        for (int value: values) {
+            cell.removePossibleValue(value);
+        }
     }
 
-    private boolean isValidInput(int cellColIdx, int cellRowIdx, int val) {
-        if (cellColIdx < 1 || cellColIdx > 9 || cellRowIdx < 1 || cellRowIdx > 9 || val < 1 || val > 9) {
-            return false;
-        }
-        return true;
+    public Set<Integer> checkCellPossibleValues(CoorValDto data) {
+        SudokuCell cell = rows.get(data.getRowIdx()).getCellsInRow().get(data.getColIdx());
+        return cell.checkPossibleValues();
     }
 
     public void drawBoard() {

@@ -5,40 +5,32 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class SudokuCell {
-    private int value;
-    private Set<Integer> possibleValues;
-    private boolean isStartingCell;
+    private int cellValue;
+    private Set<Integer> possibleCellValues;
     public static int EMPTY = -1;
 
     public SudokuCell() {
-        this.value = EMPTY;
-        this.possibleValues = new HashSet<>(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9));
-        this.isStartingCell = false;
+        this.cellValue = EMPTY;
+        this.possibleCellValues = new HashSet<>(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9));
     }
 
-    public boolean setStartingValue(int newVal) {
-        possibleValues = new HashSet<>();
-        this.isStartingCell = true;
-        return setValue(newVal);
+    public int getCellValue() {
+        return cellValue;
     }
 
-    public boolean setValue(int newVal) {
-        if (possibleValues.contains(newVal)) {
-            this.value = newVal;
+    public boolean setCellValue(int newVal) {
+        if (possibleCellValues.contains(newVal)) {
+            this.cellValue = newVal;
             return true;
         }
         return false;
     }
 
     public boolean removePossibleValue(int val) {
-        return possibleValues.remove(val);
+        return possibleCellValues.remove(val);
     }
 
     public Set<Integer> checkPossibleValues() {
-        return possibleValues;
-    }
-
-    public int getValue() {
-        return value;
+        return possibleCellValues;
     }
 }
