@@ -1,11 +1,17 @@
-package com.kodilla.sudoku.board;
+package com.kodilla.sudoku.auxiliary;
 
-public class CoorValDto {
+public class UserInputDto {
     private int colIdx;
     private int rowIdx;
     private int val;
 
-    public CoorValDto(int colIdx, int rowIdx, int val) throws Exception {
+    public UserInputDto(UserInputDto userInputDto) throws Exception {
+            this.colIdx = userInputDto.getColIdx();
+            this.rowIdx = userInputDto.getRowIdx();
+            this.val = userInputDto.getVal();
+    }
+
+    public UserInputDto(int colIdx, int rowIdx, int val) throws Exception {
         if (InputValidator.isValidInput(colIdx)) {
             this.colIdx = InputValidator.normalizeValue(colIdx);
         } else {
@@ -19,7 +25,7 @@ public class CoorValDto {
         }
 
         if (InputValidator.isValidInput(colIdx)) {
-            this.val = InputValidator.normalizeValue(val);
+            this.val = val;
         } else {
             throw new Exception("Value out of range.");
         }
@@ -35,5 +41,17 @@ public class CoorValDto {
 
     public int getVal() {
         return val;
+    }
+
+    public void setColIdx(int colIdx) {
+        this.colIdx = colIdx;
+    }
+
+    public void setRowIdx(int rowIdx) {
+        this.rowIdx = rowIdx;
+    }
+
+    public void setVal(int val) {
+        this.val = val;
     }
 }

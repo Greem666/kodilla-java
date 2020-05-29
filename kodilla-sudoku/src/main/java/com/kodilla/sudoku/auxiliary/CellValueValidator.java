@@ -1,11 +1,14 @@
-package com.kodilla.sudoku.board;
+package com.kodilla.sudoku.auxiliary;
+
+import com.kodilla.sudoku.board.SudokuCell;
+import com.kodilla.sudoku.board.SudokuRow;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class FieldMarkingValidator {
-    public static boolean checkColumnValues(int colIdx, int val, List<SudokuRow> rows) {
+public class CellValueValidator {
+    public static boolean checkValuesPresentInColumn(int colIdx, int val, List<SudokuRow> rows) {
         for (SudokuRow row: rows) {
             SudokuCell columnCell = row.getCellsInRow().get(colIdx);
             if (val == columnCell.getCellValue()) {
@@ -16,7 +19,7 @@ public class FieldMarkingValidator {
         return true;
     }
 
-    public static boolean checkRowValues(int rowIdx, int val, List<SudokuRow> rows) {
+    public static boolean checkValuesPresentInRow(int rowIdx, int val, List<SudokuRow> rows) {
         SudokuRow row = rows.get(rowIdx);
         for (SudokuCell rowCell: row.getCellsInRow()) {
             if (val == rowCell.getCellValue()) {
@@ -27,9 +30,9 @@ public class FieldMarkingValidator {
         return true;
     }
 
-    public static boolean check3By3CubeValues(int cellColIdx, int cellRowIdx, int val, List<SudokuRow> rows) {
-        ArrayList<Integer> cubeRows = identify3By3CubeIndexes(cellRowIdx);
-        ArrayList<Integer> cubeCols = identify3By3CubeIndexes(cellColIdx);
+    public static boolean checkValuesPresentIn3By3Cube(int cellColIdx, int cellRowIdx, int val, List<SudokuRow> rows) {
+        ArrayList<Integer> cubeRows = identifyCorresponding3By3Cube(cellRowIdx);
+        ArrayList<Integer> cubeCols = identifyCorresponding3By3Cube(cellColIdx);
 
         for (Integer rowIdx: cubeRows) {
             for (Integer colIdx: cubeCols) {
@@ -43,7 +46,7 @@ public class FieldMarkingValidator {
         return true;
     }
 
-    public static ArrayList<Integer> identify3By3CubeIndexes(int cellIdx) {
+    public static ArrayList<Integer> identifyCorresponding3By3Cube(int cellIdx) {
         ArrayList<Integer> colsToCheck = new ArrayList<>();
         if (cellIdx < 3) {
             colsToCheck.addAll(Arrays.asList(0, 1, 2));

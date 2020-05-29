@@ -1,5 +1,9 @@
 package com.kodilla.sudoku.board;
 
+import com.kodilla.sudoku.auxiliary.CellValueValidator;
+import com.kodilla.sudoku.auxiliary.UserInputDto;
+import com.kodilla.sudoku.auxiliary.ValueOptionsHandler;
+
 import java.util.*;
 import java.util.stream.IntStream;
 
@@ -13,22 +17,19 @@ public class SudokuBoard {
         IntStream.range(0, 9).forEach(i -> rows.add(new SudokuRow()));
     }
 
-    public boolean markCellWithNumber(CoorValDto data) {
+    public boolean markCellWithNumber(UserInputDto data) {
         int cellColIdx = data.getColIdx();
         int cellRowIdx = data.getRowIdx();
         int val = data.getVal();
 
-        boolean valNotInCol = FieldMarkingValidator.checkColumnValues(cellColIdx, val, this.rows);
-        boolean valNotInRow = FieldMarkingValidator.checkRowValues(cellRowIdx, val, this.rows);
-        boolean valNotIn3By3Cube = FieldMarkingValidator.check3By3CubeValues(cellColIdx, cellRowIdx, val, this.rows);
+        boolean valNotInCol = CellValueValidator.checkValuesPresentInColumn(cellColIdx, val, this.rows);
+        boolean valNotInRow = CellValueValidator.checkValuesPresentInRow(cellRowIdx, val, this.rows);
+        boolean valNotIn3By3Cube = CellValueValidator.checkValuesPresentIn3By3Cube(cellColIdx, cellRowIdx, val, this.rows);
+
         if (valNotInCol && valNotInRow && valNotIn3By3Cube) {
             boolean valueWasSet = rows.get(cellRowIdx).setColumnValue(cellColIdx, val);
             if (valueWasSet) {
-                // remove val as a possibility from row, col and 3x3 cube
-                List<Integer> valuesForRemoval = Collections.singletonList(val);
-                removeCellPossibleValuesInRow(data);
-                removeCellPossibleValuesInCol(data);
-                removeCellPossibleValuesIn3By3Cube(data);
+                ValueOptionsHandler.removeCellValueOptionInColRowCube(data, this);
             }
             return valueWasSet;
         }
@@ -36,69 +37,11 @@ public class SudokuBoard {
         return false;
     }
 
-    public void removeCellPossibleValuesInRow(CoorValDto data) {
-        try {
-            removeCellPossibleValuesInLine(data, true);
-        } catch (Exception e) {
-            System.out.println(e);
-        }
+    public List<SudokuRow> getRows() {
+        return rows;
     }
 
-    public void removeCellPossibleValuesInCol(CoorValDto data) {
-        try {
-            removeCellPossibleValuesInLine(data, false);
-        } catch (Exception e) {
-            System.out.println(e);
-        }
-
-    }
-
-    public void removeCellPossibleValuesInLine(CoorValDto data, boolean inRow) throws Exception{
-        int cellColIdx = data.getColIdx();
-        int cellRowIdx = data.getRowIdx();
-        int valueForRemoval = data.getVal();
-
-        List<Integer> valuesForRemoval = Collections.singletonList(valueForRemoval);
-        for (int i = 0; i < 9; i++) {
-            if (i != cellColIdx) {
-                if (inRow) {
-                    removeCellPossibleValues(new CoorValDto(i, cellRowIdx, valueForRemoval), valuesForRemoval);
-                } else {
-                    removeCellPossibleValues(new CoorValDto(cellColIdx, i, valueForRemoval), valuesForRemoval);
-                }
-            }
-        }
-    }
-
-    public void removeCellPossibleValuesIn3By3Cube(CoorValDto data) {
-        int cellColIdx = data.getColIdx();
-        int cellRowIdx = data.getRowIdx();
-        int valueForRemoval = data.getVal();
-
-        List<Integer> valuesForRemoval = Collections.singletonList(valueForRemoval);
-        ArrayList<Integer> cubeRows = FieldMarkingValidator.identify3By3CubeIndexes(cellRowIdx);
-        ArrayList<Integer> cubeCols = FieldMarkingValidator.identify3By3CubeIndexes(cellColIdx);
-
-        for (int row: cubeRows) {
-            for (int col: cubeCols) {
-                if (cellColIdx != col && cellRowIdx != row) {
-                    removeCellPossibleValues(data, valuesForRemoval);
-                }
-            }
-        }
-    }
-
-    public void removeCellPossibleValues(CoorValDto data, List<Integer> values) {
-        int cellColIdx = data.getColIdx();
-        int cellRowIdx = data.getRowIdx();
-
-        SudokuCell cell = rows.get(cellRowIdx).getCellsInRow().get(cellColIdx);
-        for (int value: values) {
-            cell.removePossibleValue(value);
-        }
-    }
-
-    public Set<Integer> checkCellPossibleValues(CoorValDto data) {
+    public Set<Integer> checkCellValuesOptions(UserInputDto data) {
         SudokuCell cell = rows.get(data.getRowIdx()).getCellsInRow().get(data.getColIdx());
         return cell.checkPossibleValues();
     }

@@ -1,4 +1,4 @@
-package com.kodilla.sudoku.board;
+package com.kodilla.sudoku.auxiliary;
 
 public class InputValidator {
     public static boolean isValidInput(int... values) {
