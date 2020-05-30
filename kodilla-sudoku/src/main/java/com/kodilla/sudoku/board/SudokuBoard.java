@@ -1,13 +1,14 @@
 package com.kodilla.sudoku.board;
 
-import com.kodilla.sudoku.auxiliary.CellValueValidator;
+import com.kodilla.sudoku.auxiliary.PresentValuesChecker;
 import com.kodilla.sudoku.auxiliary.UserInputDto;
-import com.kodilla.sudoku.auxiliary.ValueOptionsHandler;
+import com.kodilla.sudoku.auxiliary.PossibleValuesHandler;
+import com.kodilla.sudoku.interfaces.Prototype;
 
 import java.util.*;
 import java.util.stream.IntStream;
 
-public class SudokuBoard {
+public class SudokuBoard extends Prototype {
     private List<SudokuRow> rows;
     private final static String HORIZONTAL_BORDER = "-----------------------------------------------------------";
     private final static String HORIZONTAL_DOUBLE_BORDER = "===========================================================";
@@ -22,14 +23,14 @@ public class SudokuBoard {
         int cellRowIdx = data.getRowIdx();
         int val = data.getVal();
 
-        boolean valNotInCol = CellValueValidator.checkValuesPresentInColumn(cellColIdx, val, this.rows);
-        boolean valNotInRow = CellValueValidator.checkValuesPresentInRow(cellRowIdx, val, this.rows);
-        boolean valNotIn3By3Cube = CellValueValidator.checkValuesPresentIn3By3Cube(cellColIdx, cellRowIdx, val, this.rows);
+        boolean valNotInCol = PresentValuesChecker.checkValuesPresentInColumn(cellColIdx, val, this.rows);
+        boolean valNotInRow = PresentValuesChecker.checkValuesPresentInRow(cellRowIdx, val, this.rows);
+        boolean valNotIn3By3Cube = PresentValuesChecker.checkValuesPresentIn3By3Cube(cellColIdx, cellRowIdx, val, this.rows);
 
         if (valNotInCol && valNotInRow && valNotIn3By3Cube) {
             boolean valueWasSet = rows.get(cellRowIdx).setColumnValue(cellColIdx, val);
             if (valueWasSet) {
-                ValueOptionsHandler.removeCellValueOptionInColRowCube(data, this);
+                PossibleValuesHandler.removeCellValueOptionInColRowCube(data, this);
             }
             return valueWasSet;
         }
@@ -57,5 +58,33 @@ public class SudokuBoard {
             }
         }
         System.out.println(HORIZONTAL_DOUBLE_BORDER);
+    }
+
+    private void setRows(List<SudokuRow> rows) {
+        this.rows = rows;
+    }
+
+    private SudokuBoard shallowCopy() throws CloneNotSupportedException {
+        return (SudokuBoard)super.clone();
+    }
+
+    public SudokuBoard deepCopy() {
+        SudokuBoard clonedBoard = null;
+        try {
+            clonedBoard = this.shallowCopy();
+            List<SudokuRow> clonedRows = new ArrayList<>();
+
+            for (SudokuRow row: rows) {
+                clonedRows.add(row.deepCopy());
+            }
+
+            clonedBoard.setRows(clonedRows);
+            return clonedBoard;
+
+        } catch (CloneNotSupportedException e) {
+            System.out.println(e);
+        }
+
+        return null;
     }
 }

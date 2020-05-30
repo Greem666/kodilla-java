@@ -1,7 +1,7 @@
 package com.kodilla.sudoku.board;
 
 import com.kodilla.sudoku.auxiliary.UserInputDto;
-import com.kodilla.sudoku.auxiliary.ValueOptionsHandler;
+import com.kodilla.sudoku.auxiliary.PossibleValuesHandler;
 
 import java.util.List;
 import java.util.Random;
@@ -16,7 +16,10 @@ public class SudokuBoardFactory {
     public static SudokuBoard makeBoard(String difficultyLevel) {
         SudokuBoard board = new SudokuBoard();
         switch (difficultyLevel) {
-            case EASY_DIFFICULTY: default:
+            default:
+                populateBoard(board, 35);
+                break;
+            case EASY_DIFFICULTY:
                 populateBoard(board, 24);
                 break;
             case MEDIUM_DIFFICULTY:
@@ -43,8 +46,8 @@ public class SudokuBoardFactory {
                     int randVal = random.nextInt(8) + 1;
 //                    System.out.println(randCol + " " + randRow + " " + randVal);
                     randomStartingValue = new UserInputDto(randCol, randRow, randVal);
-                } catch (Exception e) {
-                    System.out.println(e);
+                } catch (IllegalArgumentException e) {
+                    System.out.println("Exception during attempt to populate new Sudoku board: " + e);
                     fieldIsFilled = false;
                     continue;
                 }
@@ -53,7 +56,7 @@ public class SudokuBoardFactory {
 
                 if (fieldIsFilled) {
                     cleanValueOptionsOnMarkedStartingField(randomStartingValue, board);
-                    ValueOptionsHandler.removeCellValueOptionInColRowCube(randomStartingValue, board);
+//                    PossibleValuesHandler.removeCellValueOptionInColRowCube(randomStartingValue, board);
                 }
 
             } while (!fieldIsFilled);
@@ -77,9 +80,11 @@ public class SudokuBoardFactory {
                 .collect(Collectors.toList());
         for (int valueForRemoval: valuesForRemoval) {
             try {
-                ValueOptionsHandler.removeCellValueOption(new UserInputDto(input.getColIdx() + 1, input.getRowIdx() + 1, valueForRemoval), board);
-            } catch (Exception e) {
-                System.out.println(e);
+                UserInputDto newInput = new UserInputDto(input);
+                newInput.setVal(valueForRemoval);
+                PossibleValuesHandler.removeCellValueOption(newInput, board);
+            } catch (IllegalArgumentException e) {
+                System.out.println("Exception during cleaning of value options in a cell with a set starting value: " + e);
             }
         }
     }

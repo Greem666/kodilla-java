@@ -5,7 +5,7 @@ import com.kodilla.sudoku.board.SudokuCell;
 
 import java.util.ArrayList;
 
-public class ValueOptionsHandler {
+public class PossibleValuesHandler {
     public static void removeCellValueOptionInColRowCube(UserInputDto data, SudokuBoard board) {
         removeCellValueOptionInRow(data, board);
         removeCellValueOptionInCol(data, board);
@@ -14,25 +14,24 @@ public class ValueOptionsHandler {
 
     private static void removeCellValueOptionInRow(UserInputDto data, SudokuBoard board) {
         try {
-            removeCellValueOptionInLine(data, board, true);
-        } catch (Exception e) {
-            System.out.println(e);
+            removeCellValueOptionInRowOrCol(data, board, true);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Exception during cell value options removal in ROW: " + e);
         }
     }
 
     private static void removeCellValueOptionInCol(UserInputDto data, SudokuBoard board) {
         try {
-            removeCellValueOptionInLine(data, board, false);
-        } catch (Exception e) {
-            System.out.println(e);
+            removeCellValueOptionInRowOrCol(data, board, false);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Exception during cell value options removal in COLUMN: " + e);
         }
 
     }
 
-    private static void removeCellValueOptionInLine(UserInputDto data, SudokuBoard board, boolean inRow) throws Exception{
+    private static void removeCellValueOptionInRowOrCol(UserInputDto data, SudokuBoard board, boolean inRow) throws IllegalArgumentException {
         int cellColIdx = data.getColIdx();
         int cellRowIdx = data.getRowIdx();
-        int valueForRemoval = data.getVal();
 
         for (int i = 0; i < 9; i++) {
             UserInputDto newData = new UserInputDto(data);
@@ -54,8 +53,8 @@ public class ValueOptionsHandler {
         int cellColIdx = data.getColIdx();
         int cellRowIdx = data.getRowIdx();
 
-        ArrayList<Integer> cubeRows = CellValueValidator.identifyCorresponding3By3Cube(cellRowIdx);
-        ArrayList<Integer> cubeCols = CellValueValidator.identifyCorresponding3By3Cube(cellColIdx);
+        ArrayList<Integer> cubeRows = PresentValuesChecker.identifyCorresponding3By3Cube(cellRowIdx);
+        ArrayList<Integer> cubeCols = PresentValuesChecker.identifyCorresponding3By3Cube(cellColIdx);
 
         for (int row: cubeRows) {
             for (int col: cubeCols) {
@@ -65,8 +64,8 @@ public class ValueOptionsHandler {
                         pointForRemoval.setRowIdx(row);
                         pointForRemoval.setColIdx(col);
                         removeCellValueOption(pointForRemoval, board);
-                    } catch (Exception e) {
-                        System.out.println(e);
+                    } catch (IllegalArgumentException e) {
+                        System.out.println("Exception during cell value options removal in 3x3 cube: " + e);
                     }
                 }
             }

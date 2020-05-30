@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class CellValueValidator {
+public class PresentValuesChecker {
     public static boolean checkValuesPresentInColumn(int colIdx, int val, List<SudokuRow> rows) {
         for (SudokuRow row: rows) {
             SudokuCell columnCell = row.getCellsInRow().get(colIdx);

@@ -1,10 +1,10 @@
 package com.kodilla.sudoku.board;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import com.kodilla.sudoku.interfaces.Prototype;
 
-public class SudokuCell {
+import java.util.*;
+
+public class SudokuCell extends Prototype {
     private int cellValue;
     private Set<Integer> possibleCellValues;
     public static int EMPTY = -1;
@@ -32,5 +32,20 @@ public class SudokuCell {
 
     public Set<Integer> checkPossibleValues() {
         return possibleCellValues;
+    }
+
+    private void setPossibleCellValues(Set<Integer> possibleCellValues) {
+        this.possibleCellValues = possibleCellValues;
+    }
+
+    public SudokuCell shallowCopy() throws CloneNotSupportedException {
+        return (SudokuCell)super.clone();
+    }
+
+    protected SudokuCell deepCopy() throws CloneNotSupportedException {
+        SudokuCell clonedCell = this.shallowCopy();
+        Set<Integer> clonedPossibleCellValues = new HashSet<>(possibleCellValues);
+        clonedCell.setPossibleCellValues(clonedPossibleCellValues);
+        return clonedCell;
     }
 }

@@ -5,29 +5,29 @@ public class UserInputDto {
     private int rowIdx;
     private int val;
 
-    public UserInputDto(UserInputDto userInputDto) throws Exception {
+    public UserInputDto(UserInputDto userInputDto) throws IllegalArgumentException {
             this.colIdx = userInputDto.getColIdx();
             this.rowIdx = userInputDto.getRowIdx();
             this.val = userInputDto.getVal();
     }
 
-    public UserInputDto(int colIdx, int rowIdx, int val) throws Exception {
+    public UserInputDto(int colIdx, int rowIdx, int val) throws IllegalArgumentException {
         if (InputValidator.isValidInput(colIdx)) {
             this.colIdx = InputValidator.normalizeValue(colIdx);
         } else {
-            throw new Exception("Column Index out of range.");
+            throw new IllegalArgumentException("UserInputDto constructor: Column Index out of range: " + colIdx + ".");
         }
 
         if (InputValidator.isValidInput(rowIdx)) {
             this.rowIdx = InputValidator.normalizeValue(rowIdx);
         } else {
-            throw new Exception("Row Index out of range.");
+            throw new IllegalArgumentException("UserInputDto constructor: Row Index out of range: " + rowIdx + ".");
         }
 
-        if (InputValidator.isValidInput(colIdx)) {
+        if (InputValidator.isValidInput(val)) {
             this.val = val;
         } else {
-            throw new Exception("Value out of range.");
+            throw new IllegalArgumentException("UserInputDto constructor: Value out of range: " + val + ".");
         }
     }
 
