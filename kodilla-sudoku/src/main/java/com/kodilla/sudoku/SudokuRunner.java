@@ -10,10 +10,8 @@ public class SudokuRunner {
     Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
-        SudokuBoard board;
-
-        board = SudokuBoardFactory.makeBoard("EASY");
-        board.drawBoard();
+        SudokuGameService game = new SudokuGameService();
+        game.run();
 
 
 

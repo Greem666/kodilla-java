@@ -1,5 +1,6 @@
 package com.kodilla.sudoku.board;
 
+import com.kodilla.sudoku.auxiliary.CoordinatesDto;
 import com.kodilla.sudoku.auxiliary.PresentValuesChecker;
 import com.kodilla.sudoku.auxiliary.UserInputDto;
 import com.kodilla.sudoku.auxiliary.PossibleValuesHandler;
@@ -10,8 +11,9 @@ import java.util.stream.IntStream;
 
 public class SudokuBoard extends Prototype {
     private List<SudokuRow> rows;
-    private final static String HORIZONTAL_BORDER = "-----------------------------------------------------------";
-    private final static String HORIZONTAL_DOUBLE_BORDER = "===========================================================";
+    private final static String HORIZONTAL_COLUMN_MARKS = "       1     2     3      4     5     6      7     8     9    ";
+    private final static String HORIZONTAL_BORDER = "   -----------------------------------------------------------";
+    private final static String HORIZONTAL_DOUBLE_BORDER = "   ===========================================================";
 
     public SudokuBoard() {
         this.rows = new ArrayList<>();
@@ -48,9 +50,10 @@ public class SudokuBoard extends Prototype {
     }
 
     public void drawBoard() {
+        System.out.println(HORIZONTAL_COLUMN_MARKS);
         System.out.println(HORIZONTAL_DOUBLE_BORDER);
         for (int i = 0; i < rows.size(); i++) {
-            System.out.println(rows.get(i));
+            System.out.println((i + 1) + "  " + rows.get(i));
             if (i == 2 || i == 5) {
                 System.out.println(HORIZONTAL_DOUBLE_BORDER);
             } else if (i != rows.size() - 1) {
@@ -58,6 +61,34 @@ public class SudokuBoard extends Prototype {
             }
         }
         System.out.println(HORIZONTAL_DOUBLE_BORDER);
+    }
+
+    public boolean checkIfBoardIsSolved() {
+        return rows.stream()
+                .flatMap(row -> row.getCellsInRow().stream())
+                .noneMatch(cell -> cell.getCellValue() == -1);
+    }
+
+    public boolean checkIfBoardHasEmptyCellsWithAvailableValueOptions() {
+        return rows.stream()
+                .flatMap(row -> row.getCellsInRow().stream())
+                .filter(cell -> cell.getCellValue() == -1)
+                .anyMatch(cell -> cell.checkPossibleValues().size() > 0);
+    }
+
+    public List<CoordinatesDto> getCellsWithNoAvailableValueOptions() {
+        List<CoordinatesDto> badCellsCoordinates = new ArrayList<>();
+        for (int y = 0; y < rows.size(); y++) {
+            SudokuRow row = rows.get(y);
+            for (int x = 0; x < row.getCellsInRow().size(); x++) {
+                SudokuCell cell = row.getCellsInRow().get(x);
+                if (cell.checkPossibleValues().size() == 0) {
+                    badCellsCoordinates.add(new CoordinatesDto(x, y));
+                }
+            }
+        }
+
+        return badCellsCoordinates;
     }
 
     private void setRows(List<SudokuRow> rows) {

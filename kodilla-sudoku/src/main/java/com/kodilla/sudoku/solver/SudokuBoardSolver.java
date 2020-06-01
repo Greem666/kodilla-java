@@ -10,7 +10,7 @@ import java.util.*;
 public class SudokuBoardSolver {
     private static Random random = new Random();
 
-    public static BoardDto solveBoard(SudokuBoard board) throws UnsolvableBoardException {
+    public static BoardSolutionDto solveBoard(SudokuBoard board) throws UnsolvableBoardException {
         int backtrackingCounter = 0;
 
         // Stack for backtracking
@@ -68,6 +68,6 @@ public class SudokuBoardSolver {
             }
             y++;
         }
-        return new BoardDto(board, backtrackingCounter);
+        return new BoardSolutionDto(board, backtrackingCounter);
     }
 }

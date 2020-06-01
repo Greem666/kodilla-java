@@ -19,7 +19,7 @@ public class SudokuCell extends Prototype {
     }
 
     public boolean setCellValue(int newVal) {
-        if (possibleCellValues.contains(newVal)) {
+        if (possibleCellValues.contains(newVal) && cellValue == -1) {
             this.cellValue = newVal;
             return true;
         }

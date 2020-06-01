@@ -6,23 +6,23 @@ import com.kodilla.sudoku.solver.*;
 import java.util.*;
 
 public class SudokuBoardFactory {
-    public final static String EASY_DIFFICULTY = "EASY";
-    public final static String MEDIUM_DIFFICULTY = "MEDIUM";
-    public final static String HARD_DIFFICULTY = "HARD";
+    public final static int EASY_DIFFICULTY = 1;
+    public final static int MEDIUM_DIFFICULTY = 2;
+    public final static int HARD_DIFFICULTY = 3;
     private static Random random = new Random();
 
-    public static SudokuBoard makeBoard(String difficultyLevel) {
+    public static SudokuBoard makeBoard(int difficultyLevel) {
         SudokuBoard board;
 
         switch (difficultyLevel) {
             case EASY_DIFFICULTY: default:
-                board = generateBoard(new BoardDifficultyDto(24, 0, 50));
+                board = generateBoard(new BoardDifficultyDto(65, 0, 50));
                 break;
             case MEDIUM_DIFFICULTY:
-                board = generateBoard(new BoardDifficultyDto(20, 50, 100));
+                board = generateBoard(new BoardDifficultyDto(45, 50, 100));
                 break;
             case HARD_DIFFICULTY:
-                board = generateBoard(new BoardDifficultyDto(17, 100, 200));
+                board = generateBoard(new BoardDifficultyDto(40, 100, 200));
                 break;
         }
 
@@ -41,7 +41,7 @@ public class SudokuBoardFactory {
             populateEmptyBoardSection(7, 7, 9, 9, newBoard);
 
             // 2. Solve board
-            BoardDto solvedBoardDto;
+            BoardSolutionDto solvedBoardDto;
             try {
                 solvedBoardDto = SudokuBoardSolver.solveBoard(newBoard);
             } catch (UnsolvableBoardException e) {
