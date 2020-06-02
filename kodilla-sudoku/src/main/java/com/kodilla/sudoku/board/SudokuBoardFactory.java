@@ -16,13 +16,13 @@ public class SudokuBoardFactory {
 
         switch (difficultyLevel) {
             case EASY_DIFFICULTY: default:
-                board = generateBoard(new BoardDifficultyDto(65, 0, 50));
+                board = generateBoard(new BoardDifficultyDto(55, 0, 50));
                 break;
             case MEDIUM_DIFFICULTY:
                 board = generateBoard(new BoardDifficultyDto(45, 50, 100));
                 break;
             case HARD_DIFFICULTY:
-                board = generateBoard(new BoardDifficultyDto(40, 100, 200));
+                board = generateBoard(new BoardDifficultyDto(35, 100, 200));
                 break;
         }
 
