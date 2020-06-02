@@ -28,13 +28,11 @@ public class TaskFinancialDetails {
         return id;
     }
 
-    @NotNull
     @Column(name="PRICE")
     public BigDecimal getPrice() {
         return price;
     }
 
-    @NotNull
     @Column(name="PAID")
     public boolean isPaid() {
         return paid;
