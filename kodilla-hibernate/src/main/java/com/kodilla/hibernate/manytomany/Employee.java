@@ -29,19 +29,19 @@ public class Employee {
     @GeneratedValue
     @NotNull
     @Column(name="EMPLOYEE_ID", unique=true)
-    private int getId() {
+    public int getId() {
         return id;
     }
 
     @NotNull
     @Column(name="FIRSTNAME")
-    private String getFirstName() {
+    public String getFirstName() {
         return firstName;
     }
 
     @NotNull
     @Column(name="LASTNAME")
-    private String getLastName() {
+    public String getLastName() {
         return lastName;
     }
 
