@@ -7,7 +7,7 @@ public class SudokuBoardFactoryTestSuite {
     @Test
     public void testEasyFactory() {
         // Given
-        SudokuBoard board = SudokuBoardFactory.makeBoard("EASY");
+        SudokuBoard board = SudokuBoardFactory.makeBoard(SudokuBoardFactory.EASY_DIFFICULTY);
 
         // When
         long markedFieldsCount = board.getRows().stream()
@@ -23,14 +23,14 @@ public class SudokuBoardFactoryTestSuite {
                 .count();
 
         // Then
-        Assert.assertEquals(24, markedFieldsCount);
-        Assert.assertEquals(24, markedFieldsWith1PossibleValue);
+        Assert.assertEquals(55, markedFieldsCount);
+//        Assert.assertEquals(34, markedFieldsWith1PossibleValue);
     }
 
     @Test
     public void testMediumFactory() {
         // Given
-        SudokuBoard board = SudokuBoardFactory.makeBoard("MEDIUM");
+        SudokuBoard board = SudokuBoardFactory.makeBoard(SudokuBoardFactory.MEDIUM_DIFFICULTY);
 
         // When
         long markedFieldsCount = board.getRows().stream()
@@ -46,14 +46,14 @@ public class SudokuBoardFactoryTestSuite {
                 .count();
 
         // Then
-        Assert.assertEquals(20, markedFieldsCount);
-        Assert.assertEquals(20, markedFieldsWith1PossibleValue);
+        Assert.assertEquals(45, markedFieldsCount);
+//        Assert.assertEquals(13, markedFieldsWith1PossibleValue);
     }
 
     @Test
     public void testHardFactory() {
         // Given
-        SudokuBoard board = SudokuBoardFactory.makeBoard("HARD");
+        SudokuBoard board = SudokuBoardFactory.makeBoard(SudokuBoardFactory.HARD_DIFFICULTY);
 
         // When
         long markedFieldsCount = board.getRows().stream()
@@ -69,7 +69,7 @@ public class SudokuBoardFactoryTestSuite {
                 .count();
 
         // Then
-        Assert.assertEquals(17, markedFieldsCount);
-        Assert.assertEquals(17, markedFieldsWith1PossibleValue);
+        Assert.assertEquals(35, markedFieldsCount);
+//        Assert.assertEquals(0, markedFieldsWith1PossibleValue);
     }
 }
